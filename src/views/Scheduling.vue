@@ -14,7 +14,9 @@ export default {
       startHour: "",
       endHour: "",
       agendaId: "",
-      participants: []
+      participants: [],
+      agendaStartHour: "",
+      agendaEndHour: ""
     };
   },
 
@@ -28,6 +30,18 @@ export default {
         this.startHour !== "" &&
         this.endHour !== "" &&
         this.agendaId !== ""
+      );
+    },
+    _validateHoursRange() {
+      const startAgenda = parseInt(this.agendaStartHour.split(":")[0]);
+      const endAgenda = parseInt(this.agendaEndHour.split(":")[0]);
+      const startAppointment = parseInt(this.startHour.split(":")[0]);
+      const endAppointment = parseInt(this.endHour.split(":")[0]);
+      return (
+        startAppointment >= startAgenda &&
+        startAppointment < endAgenda &&
+        endAppointment > startAgenda &&
+        endAppointment <= endAgenda
       );
     }
   }
