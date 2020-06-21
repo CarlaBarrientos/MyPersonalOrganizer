@@ -1,3 +1,5 @@
 export default {
-  getters: {}
+  getParticipantsList(state) {
+    return state.participants;
+  }
 };
