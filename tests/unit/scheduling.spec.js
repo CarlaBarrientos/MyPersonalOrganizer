@@ -109,6 +109,13 @@ describe("Scheduling appointmets/meetings module", () => {
     assert.equal(updatedScheduled.date, expectedDate);
     assert.equal(updatedScheduled.agendaId, expectedAgendaId);
   });
+  it("Validate the current date before deleting.", () => {
+    const wrapper = shallowMount(Scheduling);
+    const invalidDate = wrapper.vm._validateDate("2020-06-21");
+    assert.isFalse(invalidDate);
+    const validDate = wrapper.vm._validateDate("2020-06-22");
+    assert.isTrue(validDate);
+  });
   it("Delete a scheduled appontment/meeting that is not scheduled for today.", () => {
     const wrapper = mount(Scheduling, {
       store,
