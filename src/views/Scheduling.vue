@@ -23,10 +23,23 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addSchedule"]),
+    ...mapActions(["addSchedule", "modifySchedule"]),
     addNewSchedule() {
       if (this._validateData && this._validateHoursRange) {
         this.addSchedule({
+          code: this.code,
+          name: this.name,
+          description: this.description,
+          date: this.date,
+          startHour: this.startHour,
+          endHour: this.endHour,
+          agendaId: this.agendaId
+        });
+      }
+    },
+    updateSchedule() {
+      if (this._validateData && this._validateHoursRange) {
+        this.modifySchedule({
           code: this.code,
           name: this.name,
           description: this.description,

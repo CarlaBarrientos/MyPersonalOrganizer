@@ -69,6 +69,45 @@ describe("Scheduling appointmets/meetings module", () => {
       expectedLength + 1
     );
   });
-  it("Update a scheduled appointment/meeting.", () => {});
+  it("Update a scheduled appointment/meeting.", () => {
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
+
+    let expectedName = "presentation";
+    let expectedDate = "2020-06-21";
+    let expectedAgendaId = "1";
+
+    const actualScheduled = wrapper.vm.$store.state.scheduledAppointments.find(
+      schedule => schedule.code === "1"
+    );
+
+    assert.equal(actualScheduled.name, expectedName);
+    assert.equal(actualScheduled.date, expectedDate);
+    assert.equal(actualScheduled.agendaId, expectedAgendaId);
+
+    wrapper.vm.$data.code = "1";
+    wrapper.vm.$data.name = "presentation2";
+    wrapper.vm.$data.description = "final project presentation";
+    wrapper.vm.$data.date = "2020-06-22";
+    wrapper.vm.$data.startHour = "10:00";
+    wrapper.vm.$data.endHour = "12:00";
+    wrapper.vm.$data.agendaId = "3";
+
+    wrapper.vm.updateSchedule();
+
+    expectedName = "presentation2";
+    expectedDate = "2020-06-22";
+    expectedAgendaId = "3";
+
+    const updatedScheduled = wrapper.vm.$store.state.scheduledAppointments.find(
+      schedule => schedule.code === "1"
+    );
+
+    assert.equal(updatedScheduled.name, expectedName);
+    assert.equal(updatedScheduled.date, expectedDate);
+    assert.equal(updatedScheduled.agendaId, expectedAgendaId);
+  });
   it("Delete a scheduled appontment/meeting that is not scheduled for today.", () => {});
 });
