@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Scheduling",
   data() {
@@ -21,6 +23,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(["addSchedule"]),
+    addNewSchedule() {
+      if (this._validateData && this._validateHoursRange) {
+        this.addSchedule({
+          code: this.code,
+          name: this.name,
+          description: this.description,
+          date: this.date,
+          startHour: this.startHour,
+          endHour: this.endHour,
+          agendaId: this.agendaId
+        });
+      }
+    },
     _validateData() {
       return (
         this.code !== "" &&

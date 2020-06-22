@@ -1,3 +1,5 @@
 export default {
-  actions: {}
+  addSchedule({ commit }, newSchedule) {
+    commit("mutateAddSchedule", newSchedule);
+  }
 };

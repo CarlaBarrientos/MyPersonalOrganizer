@@ -1,3 +1,5 @@
 export default {
-  mutations: {}
+  mutateAddSchedule(state, newSchedule) {
+    state.scheduledAppointments.push(newSchedule);
+  }
 };

@@ -1,3 +1,5 @@
 export default {
-  getters: {}
+  getScheduledList(state) {
+    return state.scheduledAppointments;
+  }
 };

@@ -1,8 +1,17 @@
 import { assert } from "chai";
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
 import Scheduling from "@/views/Scheduling.vue";
 
+import store from "@/store";
+import Vuex from "vuex";
+
 describe("Scheduling appointmets/meetings module", () => {
+  let localVue;
+
+  beforeEach(() => {
+    localVue = createLocalVue();
+    localVue.use(Vuex);
+  });
   it("Validate data when fields are empty.", () => {
     const wrapper = shallowMount(Scheduling);
     const invalidData = wrapper.vm._validateData();
@@ -39,7 +48,27 @@ describe("Scheduling appointmets/meetings module", () => {
     const validRange = wrapper.vm._validateHoursRange();
     assert.isTrue(validRange);
   });
-  it("Add a new appointment/meeting validating data.", () => {});
+  it("Add a new appointment/meeting validating data.", () => {
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
+
+    wrapper.vm.$data.code = "1";
+    wrapper.vm.$data.name = "presentation";
+    wrapper.vm.$data.description = "final project presentation";
+    wrapper.vm.$data.date = "2020-06-21";
+    wrapper.vm.$data.startHour = "10:00";
+    wrapper.vm.$data.endHour = "12:00";
+    wrapper.vm.$data.agendaId = "1";
+
+    const expectedLength = wrapper.vm.$store.state.scheduledAppointments.length;
+    wrapper.vm.addNewSchedule();
+    assert.equal(
+      wrapper.vm.$store.state.scheduledAppointments.length,
+      expectedLength + 1
+    );
+  });
   it("Update a scheduled appointment/meeting.", () => {});
   it("Delete a scheduled appontment/meeting that is not scheduled for today.", () => {});
 });
