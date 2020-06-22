@@ -4,5 +4,8 @@ export default {
   },
   modifySchedule({ commit }, scheduleToUpdate) {
     commit("mutateModifySchedule", scheduleToUpdate);
+  },
+  deleteSched({ commit }, code) {
+    commit("mutateDeleteSchedule", code);
   }
 };

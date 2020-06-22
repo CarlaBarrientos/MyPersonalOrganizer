@@ -23,7 +23,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addSchedule", "modifySchedule"]),
+    ...mapActions(["addSchedule", "modifySchedule", "deleteSched"]),
     addNewSchedule() {
       if (this._validateData && this._validateHoursRange) {
         this.addSchedule({
@@ -50,6 +50,11 @@ export default {
         });
       }
     },
+    deleteSchedule() {
+      if (this._validateDate()) {
+        this.deleteSched(this.code);
+      }
+    },
     _validateData() {
       return (
         this.code !== "" &&
@@ -72,6 +77,16 @@ export default {
         endAppointment > startAgenda &&
         endAppointment <= endAgenda
       );
+    },
+    _validateDate(appointmentDate) {
+      let today = new Date();
+      const dd = String(today.getDate()).padStart(2, "0");
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const yyyy = today.getFullYear();
+
+      const currentDate = `${yyyy}-${mm}-${dd}`;
+
+      return appointmentDate !== currentDate;
     }
   }
 };

@@ -109,5 +109,18 @@ describe("Scheduling appointmets/meetings module", () => {
     assert.equal(updatedScheduled.date, expectedDate);
     assert.equal(updatedScheduled.agendaId, expectedAgendaId);
   });
-  it("Delete a scheduled appontment/meeting that is not scheduled for today.", () => {});
+  it("Delete a scheduled appontment/meeting that is not scheduled for today.", () => {
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
+
+    const expectedLength = 0;
+    wrapper.vm.$data.code = "1";
+    wrapper.vm.deleteSchedule();
+    assert.equal(
+      expectedLength,
+      wrapper.vm.$store.state.scheduledAppointments.length
+    );
+  });
 });
