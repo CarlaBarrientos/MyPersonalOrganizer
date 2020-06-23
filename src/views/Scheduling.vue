@@ -1,8 +1,49 @@
 <template>
-  <div></div>
+  <div>
+    <v-container class="my-10" grid-list-md>
+      <H1>Appointments/Meetings</H1>
+      <br />
+      <v-btn
+        long
+        depressed
+        color="#F2F2F2"
+        width="150px"
+        @click.stop="showDialog = true"
+      >
+        <v-icon left small>mdi-plus-circle-outline</v-icon>
+        <span class="caption text-lowercase">Add New</span>
+      </v-btn>
+      <v-layout row wrap>
+        <v-flex v-for="appointment in scheduled" :key="appointment.code">
+          <v-card class="mx-auto" max-width="344">
+            <v-card-title>
+              <div class="subheading">{{ appointment.name }}</div>
+            </v-card-title>
+            <v-card-text>
+              <div class="grey--text">
+                Description: {{ appointment.description }}
+              </div>
+              <div class="grey--text">Date: {{ appointment.date }}</div>
+              <div class="grey--text">
+                Start hour: {{ appointment.startHour }}
+              </div>
+              <div class="grey--text">End hour: {{ appointment.endHour }}</div>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click="deleteSchedule(appointment.code)">Delete</v-btn>
+              <v-btn @click.stop="showDialog = true">Update</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <ScheduleDialog v-model="showDialog" />
+  </div>
 </template>
 
 <script>
+import ScheduleDialog from "../components/ScheduleDialog.vue";
+import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 
 export default {
@@ -18,12 +59,27 @@ export default {
       agendaId: "",
       participants: [],
       agendaStartHour: "",
-      agendaEndHour: ""
+      agendaEndHour: "",
+      showDialog: false
     };
+  },
+
+  components: {
+    ScheduleDialog
+  },
+
+  computed: {
+    ...mapGetters(["getScheduledList"]),
+    scheduled() {
+      return this.getScheduledList;
+    }
   },
 
   methods: {
     ...mapActions(["addSchedule", "modifySchedule", "deleteSched"]),
+    test() {
+      return this.scheduled[0].name;
+    },
     addNewSchedule() {
       if (this._validateData && this._validateHoursRange) {
         this.addSchedule({
@@ -50,9 +106,9 @@ export default {
         });
       }
     },
-    deleteSchedule() {
+    deleteSchedule(codeToDelete) {
       if (this._validateDate()) {
-        this.deleteSched(this.code);
+        this.deleteSched(codeToDelete);
       }
     },
     _validateData() {
