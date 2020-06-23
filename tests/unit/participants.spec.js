@@ -76,7 +76,28 @@ describe("Participants Logic", () => {
     ).name;
     assert.equal(updatedParticipant, "Updated");
   });
-  it("Add Participant to an Appointment", () => {});
+  it("Add Participant to an Appointment", () => {
+    const wrapper = mount(Participants, {
+      store,
+      localVue
+    });
+    let allAppointments = wrapper.vm.$store.state.scheduledAppointments.concat(
+      wrapper.vm.$store.state.recursiveAppointments
+    );
+    wrapper.vm.$data.name = "TestAddingToAppointment";
+    wrapper.vm.$data.participantId = "PART-5";
+    wrapper.vm.$data.contactNumber = "70777777";
+    wrapper.vm.$data.appointmentCode = "SCH-1";
+    const expectedlength = allAppointments.find(
+      appointment => appointment.code === "SCH-1"
+    ).participants.length;
+    wrapper.vm.addParticipantToAppointment();
+    assert.equal(
+      expectedlength + 1,
+      allAppointments.find(appointment => appointment.code === "SCH-1")
+        .participants.length
+    );
+  });
   it("Remove Participant from Appointment", () => {});
   it("Delete Participant with no Future Appointment", () => {});
   it("Delete Participant with a Future Appointment", () => {});

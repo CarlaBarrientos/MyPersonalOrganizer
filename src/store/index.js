@@ -8,10 +8,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     agendas: [],
-    scheduledAppointments: [],
+    scheduledAppointments: [{ code: "SCH-1", participants: [] }],
     postponedAppointments: [],
-    recursiveAppointments: [],
-    participants: []
+    recursiveAppointments: [{ code: "REC-1", participants: [] }],
+    participants: [
+      {
+        participantId: "PART-5",
+        name: "Andres Gamboa",
+        contactNumber: "70777777"
+      }
+    ]
   },
   actions,
   mutations,

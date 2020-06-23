@@ -12,5 +12,20 @@ export default {
         }
       }
     });
+  },
+  mutateAddParticipant(state, participantToAdd) {
+    const participant = {
+      participantId: participantToAdd.participantId,
+      name: participantToAdd.name,
+      contactNumber: participantToAdd.contactNumber
+    };
+    let allAppointments = state.scheduledAppointments.concat(
+      state.recursiveAppointments
+    );
+    allAppointments.forEach(appointment => {
+      if (appointment.code === participantToAdd.appointmentCode) {
+        appointment.participants.push(participant);
+      }
+    });
   }
 };

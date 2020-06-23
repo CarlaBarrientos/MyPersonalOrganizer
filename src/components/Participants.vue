@@ -9,7 +9,8 @@ export default {
     return {
       name: "",
       contactNumber: "",
-      participantId: ""
+      participantId: "",
+      appointmentCode: ""
     };
   },
   computed: {
@@ -21,6 +22,7 @@ export default {
   methods: {
     ...mapActions(["createParticipant"]),
     ...mapActions(["updateParticipant"]),
+    ...mapActions(["addParticipant"]),
     _validateFields() {
       return this.name !== "" && this.contactNumber !== "";
     },
@@ -41,6 +43,22 @@ export default {
           participantId: this.participantId,
           name: this.name,
           contactNumber: this.contactNumber
+        });
+      } else {
+        alert("Verify Input Fields");
+      }
+    },
+    addParticipantToAppointment() {
+      if (this._validateFields()) {
+        this.participants.forEach(participant => {
+          if (participant.participantId === this.participantId) {
+            this.addParticipant({
+              appointmentCode: this.appointmentCode,
+              participantId: participant.participantId,
+              name: participant.name,
+              contactNumber: participant.contactNumber
+            });
+          }
         });
       } else {
         alert("Verify Input Fields");

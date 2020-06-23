@@ -4,5 +4,8 @@ export default {
   },
   updateParticipant({ commit }, participantToUpdate) {
     commit("mutateUpdateParticipant", participantToUpdate);
+  },
+  addParticipant({ commit }, participantToAdd) {
+    commit("mutateAddParticipant", participantToAdd);
   }
 };
