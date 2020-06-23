@@ -13,7 +13,7 @@ export default {
       }
     });
   },
-  mutateAddParticipant(state, participantToAdd) {
+  mutateAddParticipantToAppointment(state, participantToAdd) {
     const participant = {
       participantId: participantToAdd.participantId,
       name: participantToAdd.name,
@@ -25,6 +25,23 @@ export default {
     allAppointments.forEach(appointment => {
       if (appointment.code === participantToAdd.appointmentCode) {
         appointment.participants.push(participant);
+      }
+    });
+  },
+  mutateDeleteParticipantFromAppointment(state, participantToDelete) {
+    const participant = {
+      participantId: participantToDelete.participantId,
+      name: participantToDelete.name,
+      contactNumber: participantToDelete.contactNumber
+    };
+    let allAppointments = state.scheduledAppointments.concat(
+      state.recursiveAppointments
+    );
+    var indexOfItem;
+    allAppointments.forEach(appointment => {
+      if (appointment.code === participantToDelete.appointmentCode) {
+        indexOfItem = appointment.participants.indexOf(participant);
+        appointment.participants.splice(indexOfItem, 1);
       }
     });
   }

@@ -88,17 +88,38 @@ describe("Participants Logic", () => {
     wrapper.vm.$data.participantId = "PART-5";
     wrapper.vm.$data.contactNumber = "70777777";
     wrapper.vm.$data.appointmentCode = "SCH-1";
-    const expectedlength = allAppointments.find(
+    const actualLength = allAppointments.find(
       appointment => appointment.code === "SCH-1"
     ).participants.length;
-    wrapper.vm.addParticipantToAppointment();
+    wrapper.vm.pushParticipantToAppointment();
     assert.equal(
-      expectedlength + 1,
+      actualLength + 1,
       allAppointments.find(appointment => appointment.code === "SCH-1")
         .participants.length
     );
   });
-  it("Remove Participant from Appointment", () => {});
+  it("Remove Participant from Appointment", () => {
+    const wrapper = mount(Participants, {
+      store,
+      localVue
+    });
+    let allAppointments = wrapper.vm.$store.state.scheduledAppointments.concat(
+      wrapper.vm.$store.state.recursiveAppointments
+    );
+    wrapper.vm.$data.name = "TestDeleteFromAppointment";
+    wrapper.vm.$data.participantId = "PART-5";
+    wrapper.vm.$data.contactNumber = "70777777";
+    wrapper.vm.$data.appointmentCode = "SCH-1";
+    const actualLength = allAppointments.find(
+      appointment => appointment.code === "SCH-1"
+    ).participants.length;
+    wrapper.vm.removeParticipantFromAppointment();
+    assert.equal(
+      actualLength - 1,
+      allAppointments.find(appointment => appointment.code === "SCH-1")
+        .participants.length
+    );
+  });
   it("Delete Participant with no Future Appointment", () => {});
   it("Delete Participant with a Future Appointment", () => {});
 });

@@ -22,7 +22,8 @@ export default {
   methods: {
     ...mapActions(["createParticipant"]),
     ...mapActions(["updateParticipant"]),
-    ...mapActions(["addParticipant"]),
+    ...mapActions(["addParticipantToAppointment"]),
+    ...mapActions(["deleteParticipantFromAppointment"]),
     _validateFields() {
       return this.name !== "" && this.contactNumber !== "";
     },
@@ -48,11 +49,28 @@ export default {
         alert("Verify Input Fields");
       }
     },
-    addParticipantToAppointment() {
+    pushParticipantToAppointment() {
+      if (this._validateFields()) {
+        //Missing Appointment Exists Exception to implement when having
+        this.participants.forEach(participant => {
+          if (participant.participantId === this.participantId) {
+            this.addParticipantToAppointment({
+              appointmentCode: this.appointmentCode,
+              participantId: participant.participantId,
+              name: participant.name,
+              contactNumber: participant.contactNumber
+            });
+          }
+        });
+      } else {
+        alert("Verify Input Fields");
+      }
+    },
+    removeParticipantFromAppointment() {
       if (this._validateFields()) {
         this.participants.forEach(participant => {
           if (participant.participantId === this.participantId) {
-            this.addParticipant({
+            this.deleteParticipantFromAppointment({
               appointmentCode: this.appointmentCode,
               participantId: participant.participantId,
               name: participant.name,

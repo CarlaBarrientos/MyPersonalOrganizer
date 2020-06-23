@@ -5,7 +5,10 @@ export default {
   updateParticipant({ commit }, participantToUpdate) {
     commit("mutateUpdateParticipant", participantToUpdate);
   },
-  addParticipant({ commit }, participantToAdd) {
-    commit("mutateAddParticipant", participantToAdd);
+  addParticipantToAppointment({ commit }, participantToAdd) {
+    commit("mutateAddParticipantToAppointment", participantToAdd);
+  },
+  deleteParticipantFromAppointment({ commit }, participantToAdd) {
+    commit("mutateDeleteParticipantFromAppointment", participantToAdd);
   }
 };
