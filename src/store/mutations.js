@@ -44,5 +44,29 @@ export default {
         appointment.participants.splice(indexOfItem, 1);
       }
     });
+  },
+  mutateDeleteParticipant(state, participantToDelete) {
+    let allAppointments = state.scheduledAppointments.concat(
+      state.recursiveAppointments
+    );
+    var indexOfItem;
+    var onAppointment = false;
+    allAppointments.forEach(appointment => {
+      appointment.participants.forEach(participant => {
+        if (participant.participantId === participantToDelete.participantId) {
+          onAppointment = true;
+        }
+      });
+    });
+    if (!onAppointment) {
+      state.participants.forEach(participant => {
+        if (participant.participantId === participantToDelete.participantId) {
+          indexOfItem = state.participants.indexOf(participant);
+          state.participants.splice(indexOfItem, 1);
+        }
+      });
+    } else {
+      alert("Cant Delete Participant, First Remove it from all Appointments");
+    }
   }
 };

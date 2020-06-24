@@ -6,9 +6,10 @@ import mockParticipantStore from "./mockParticipant";
 import actions from "@/store/actions.js";
 import mutations from "@/store/mutations.js";
 import getters from "@/store/getters.js";
-let store;
+
 describe("Participants Logic", () => {
   let localVue;
+  let store;
   beforeEach(() => {
     localVue = createLocalVue();
     localVue.use(Vuex);
@@ -156,6 +157,24 @@ describe("Participants Logic", () => {
         .participants.length
     );
   });
-  it("Delete Participant with no Future Appointment", () => {});
-  it("Do not Delete Participant with a Future Appointment", () => {});
+  it("Delete Participant with no Future Appointment", () => {
+    const wrapper = mount(Participants, {
+      store,
+      localVue
+    });
+    const actualLength = wrapper.vm.$store.state.participants.length;
+    wrapper.vm.$data.participantId = "PART-8";
+    wrapper.vm.removeParticipant();
+    assert.equal(actualLength - 1, wrapper.vm.$store.state.participants.length);
+  });
+  it("Do not Delete Participant with a Future Appointment", () => {
+    const wrapper = mount(Participants, {
+      store,
+      localVue
+    });
+    wrapper.vm.$data.participantId = "PART-7";
+    const actualLength = wrapper.vm.$store.state.participants.length;
+    wrapper.vm.removeParticipant();
+    assert.equal(actualLength, wrapper.vm.$store.state.participants.length);
+  });
 });

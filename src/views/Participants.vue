@@ -28,6 +28,7 @@ export default {
     ...mapActions(["updateParticipant"]),
     ...mapActions(["addParticipantToAppointment"]),
     ...mapActions(["deleteParticipantFromAppointment"]),
+    ...mapActions(["deleteParticipant"]),
     createNewParticipant() {
       if (this._validateFields()) {
         this.createParticipant({
@@ -90,6 +91,22 @@ export default {
         } else {
           alert("Invalid Appointment Code");
         }
+      } else {
+        alert("Invalid Participant Id");
+      }
+    },
+    removeParticipant() {
+      if (this._participantExists()) {
+        this.participants.forEach(participant => {
+          if (participant.participantId === this.participantId) {
+            this.deleteParticipant({
+              appointmentCode: this.appointmentCode,
+              participantId: participant.participantId,
+              name: participant.name,
+              contactNumber: participant.contactNumber
+            });
+          }
+        });
       } else {
         alert("Invalid Participant Id");
       }

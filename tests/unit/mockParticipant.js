@@ -5,7 +5,13 @@ export default {
   recursiveAppointments: [
     {
       code: "REC-1",
-      participants: []
+      participants: [
+        {
+          participantId: "PART-7",
+          name: "TestDelete",
+          contactNumber: "70777777"
+        }
+      ]
     }
   ],
   participants: [
@@ -17,6 +23,16 @@ export default {
     {
       participantId: "PART-6",
       name: "TestUpdate",
+      contactNumber: "70777777"
+    },
+    {
+      participantId: "PART-7",
+      name: "TestDelete",
+      contactNumber: "70777777"
+    },
+    {
+      participantId: "PART-8",
+      name: "TestDelete",
       contactNumber: "70777777"
     }
   ]

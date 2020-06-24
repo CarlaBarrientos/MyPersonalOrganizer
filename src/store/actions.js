@@ -8,7 +8,10 @@ export default {
   addParticipantToAppointment({ commit }, participantToAdd) {
     commit("mutateAddParticipantToAppointment", participantToAdd);
   },
-  deleteParticipantFromAppointment({ commit }, participantToAdd) {
-    commit("mutateDeleteParticipantFromAppointment", participantToAdd);
+  deleteParticipantFromAppointment({ commit }, participantToDelete) {
+    commit("mutateDeleteParticipantFromAppointment", participantToDelete);
+  },
+  deleteParticipant({ commit }, participantToDelete) {
+    commit("mutateDeleteParticipant", participantToDelete);
   }
 };
