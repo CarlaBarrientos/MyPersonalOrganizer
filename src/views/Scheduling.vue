@@ -8,7 +8,7 @@
         depressed
         color="#F2F2F2"
         width="150px"
-        @click.stop="showDialog = true"
+        @click.stop="showCreateDialog = true"
       >
         <v-icon left small>mdi-plus-circle-outline</v-icon>
         <span class="caption text-lowercase">Add New</span>
@@ -28,21 +28,22 @@
                 Start hour: {{ appointment.startHour }}
               </div>
               <div class="grey--text">End hour: {{ appointment.endHour }}</div>
+              <div class="grey--text">Agenda: {{ appointment.agendaId }}</div>
             </v-card-text>
             <v-card-actions>
               <v-btn @click="deleteSchedule(appointment.code)">Delete</v-btn>
-              <v-btn @click.stop="showDialog = true">Update</v-btn>
+              <v-btn>Update</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
     </v-container>
-    <ScheduleDialog v-model="showDialog" />
+    <CreateScheduleDialog v-model="showCreateDialog" />
   </div>
 </template>
 
 <script>
-import ScheduleDialog from "../components/ScheduleDialog.vue";
+import CreateScheduleDialog from "../components/CreateScheduleDialog.vue";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 
@@ -50,7 +51,7 @@ export default {
   name: "Scheduling",
   data() {
     return {
-      code: "",
+      code: "6",
       name: "",
       description: "",
       date: "",
@@ -60,12 +61,12 @@ export default {
       participants: [],
       agendaStartHour: "",
       agendaEndHour: "",
-      showDialog: false
+      showCreateDialog: false
     };
   },
 
   components: {
-    ScheduleDialog
+    CreateScheduleDialog
   },
 
   computed: {
@@ -76,25 +77,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addSchedule", "modifySchedule", "deleteSched"]),
-    test() {
-      return this.scheduled[0].name;
-    },
-    addNewSchedule() {
-      if (this._validateData && this._validateHoursRange) {
-        this.addSchedule({
-          code: this.code,
-          name: this.name,
-          description: this.description,
-          date: this.date,
-          startHour: this.startHour,
-          endHour: this.endHour,
-          agendaId: this.agendaId
-        });
-      }
-    },
+    ...mapActions(["modifySchedule", "deleteSched"]),
     updateSchedule() {
-      if (this._validateData && this._validateHoursRange) {
+      if (this._validateData() && this._validateHoursRange()) {
         this.modifySchedule({
           code: this.code,
           name: this.name,
