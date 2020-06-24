@@ -28,9 +28,6 @@ export default {
     ...mapActions(["updateParticipant"]),
     ...mapActions(["addParticipantToAppointment"]),
     ...mapActions(["deleteParticipantFromAppointment"]),
-    _validateFields() {
-      return this.name !== "" && this.contactNumber !== "";
-    },
     createNewParticipant() {
       if (this._validateFields()) {
         this.createParticipant({
@@ -43,18 +40,22 @@ export default {
       }
     },
     modifyParticipant() {
-      if (this._validateFields()) {
-        this.updateParticipant({
-          participantId: this.participantId,
-          name: this.name,
-          contactNumber: this.contactNumber
-        });
+      if (this._participantExists()) {
+        if (this._validateFields()) {
+          this.updateParticipant({
+            participantId: this.participantId,
+            name: this.name,
+            contactNumber: this.contactNumber
+          });
+        } else {
+          alert("Verify Input Fields");
+        }
       } else {
-        alert("Verify Input Fields");
+        alert("Invalid Participant Id");
       }
     },
     pushParticipantToAppointment() {
-      if (this._validateFields()) {
+      if (this._participantExists()) {
         if (this._appointmentExists()) {
           this.participants.forEach(participant => {
             if (participant.participantId === this.participantId) {
@@ -70,11 +71,11 @@ export default {
           alert("Invalid Appointment Code");
         }
       } else {
-        alert("Verify Input Fields");
+        alert("Invalid Participant Id");
       }
     },
     removeParticipantFromAppointment() {
-      if (this._validateFields()) {
+      if (this._participantExists()) {
         if (this._appointmentExists()) {
           this.participants.forEach(participant => {
             if (participant.participantId === this.participantId) {
@@ -90,19 +91,35 @@ export default {
           alert("Invalid Appointment Code");
         }
       } else {
-        alert("Verify Input Fields");
+        alert("Invalid Participant Id");
       }
     },
     _calculateID() {
       return "PART-" + this.participants.length.toString();
     },
+    _validateFields() {
+      return this.name !== "" && this.contactNumber !== "";
+    },
+    _participantExists() {
+      let exists = false;
+      if (this.participantId !== "") {
+        this.participants.forEach(participant => {
+          if (participant.participantId === this.participantId) {
+            exists = true;
+          }
+        });
+      }
+      return exists;
+    },
     _appointmentExists() {
       let exists = false;
-      this.allAppointments.forEach(appointment => {
-        if (appointment.code === this.appointmentCode) {
-          exists = true;
-        }
-      });
+      if (this.appointmentCode !== "") {
+        this.allAppointments.forEach(appointment => {
+          if (appointment.code === this.appointmentCode) {
+            exists = true;
+          }
+        });
+      }
       return exists;
     }
   }

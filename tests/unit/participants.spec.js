@@ -37,7 +37,7 @@ describe("Participants Logic", () => {
     const isValid = wrapper.vm._validateFields();
     assert.isTrue(isValid);
   });
-  it("Create New Participant with Missing Fields", () => {
+  it("Do not Create New Participant with Missing Fields", () => {
     const wrapper = mount(Participants, {
       store,
       localVue
@@ -67,9 +67,6 @@ describe("Participants Logic", () => {
       store,
       localVue
     });
-    wrapper.vm.$data.name = "TestUpdate";
-    wrapper.vm.$data.contactNumber = "70777777";
-    wrapper.vm.createNewParticipant();
     const idToUpdate = wrapper.vm.$store.state.participants.find(
       participant => participant.name === "TestUpdate"
     ).participantId;
@@ -86,15 +83,13 @@ describe("Participants Logic", () => {
     ).name;
     assert.equal(updatedParticipant, "Updated");
   });
-  it("Add Participant to an Invalid Appointment", () => {
+  it("Do not Add Participant to an Invalid Appointment", () => {
     const wrapper = mount(Participants, {
       store,
       localVue
     });
     let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.name = "TestAddingToAppointment";
     wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.contactNumber = "70777777";
     wrapper.vm.$data.appointmentCode = "SCH-2";
     const expectedLength = allAppointments.find(
       appointment => appointment.code === "SCH-1"
@@ -112,9 +107,7 @@ describe("Participants Logic", () => {
       localVue
     });
     let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.name = "TestAddingToAppointment";
     wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.contactNumber = "70777777";
     wrapper.vm.$data.appointmentCode = "SCH-1";
     const actualLength = allAppointments.find(
       appointment => appointment.code === "SCH-1"
@@ -126,15 +119,13 @@ describe("Participants Logic", () => {
         .participants.length
     );
   });
-  it("Remove Participant from Invalid Appointment", () => {
+  it("Do not Remove Participant from Invalid Appointment", () => {
     const wrapper = mount(Participants, {
       store,
       localVue
     });
     let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.name = "TestDeleteFromAppointment";
     wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.contactNumber = "70777777";
     wrapper.vm.$data.appointmentCode = "SCH-2";
     const expectedLength = allAppointments.find(
       appointment => appointment.code === "SCH-1"
@@ -152,9 +143,7 @@ describe("Participants Logic", () => {
       localVue
     });
     let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.name = "TestDeleteFromAppointment";
     wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.contactNumber = "70777777";
     wrapper.vm.$data.appointmentCode = "REC-1";
     wrapper.vm.pushParticipantToAppointment();
     const actualLength = allAppointments.find(
@@ -168,5 +157,5 @@ describe("Participants Logic", () => {
     );
   });
   it("Delete Participant with no Future Appointment", () => {});
-  it("Delete Participant with a Future Appointment", () => {});
+  it("Do not Delete Participant with a Future Appointment", () => {});
 });
