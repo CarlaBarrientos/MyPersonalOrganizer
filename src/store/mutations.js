@@ -23,7 +23,7 @@ const mutateDeleteSchedule = (state, code) => {
 const mutateCreateParticipant = (state, newParticipant) => {
   state.participants.push(newParticipant);
 };
-const mutateUpdateParticipant = (state, participantToUpdate)=>{
+const mutateUpdateParticipant = (state, participantToUpdate) => {
   var indexOfItem;
   state.participants.forEach(participant => {
     if (participant.participantId === participantToUpdate.participantId) {
