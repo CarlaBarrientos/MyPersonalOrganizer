@@ -1,3 +1,7 @@
+"use strict";
+const getScheduledList = state => {
+  return state.scheduledAppointments;
+};
 export default {
-  getters: {}
+  getScheduledList
 };
