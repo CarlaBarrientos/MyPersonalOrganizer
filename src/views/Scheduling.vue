@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 <template>
   <div>
     <v-container class="my-10" grid-list-md>
@@ -31,7 +32,13 @@
               <div class="grey--text">Agenda: {{ appointment.agendaId }}</div>
             </v-card-text>
             <v-card-actions>
-              <v-btn @click="deleteSchedule(appointment.code)">Delete</v-btn>
+              <v-btn
+                @click.stop="
+                  deleteDialog(appointment.code);
+                  showDeleteDialog = true;
+                "
+                >Delete</v-btn
+              >
               <v-btn>Update</v-btn>
             </v-card-actions>
           </v-card>
@@ -39,11 +46,17 @@
       </v-layout>
     </v-container>
     <CreateScheduleDialog v-model="showCreateDialog" />
+    <DeleteScheduleDialog
+      ref="DeleteScheduleDialog"
+      v-model="showDeleteDialog"
+    />
   </div>
 </template>
 
 <script>
 import CreateScheduleDialog from "../components/CreateScheduleDialog.vue";
+import DeleteScheduleDialog from "../components/DeleteScheduleDialog.vue";
+
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 
@@ -61,12 +74,14 @@ export default {
       participants: [],
       agendaStartHour: "",
       agendaEndHour: "",
-      showCreateDialog: false
+      showCreateDialog: false,
+      showDeleteDialog: false
     };
   },
 
   components: {
-    CreateScheduleDialog
+    CreateScheduleDialog,
+    DeleteScheduleDialog
   },
 
   computed: {
@@ -77,7 +92,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["modifySchedule", "deleteSched"]),
+    ...mapActions(["modifySchedule"]),
     updateSchedule() {
       if (this._validateData() && this._validateHoursRange()) {
         this.modifySchedule({
@@ -91,10 +106,8 @@ export default {
         });
       }
     },
-    deleteSchedule(codeToDelete) {
-      if (this._validateDate()) {
-        this.deleteSched(codeToDelete);
-      }
+    deleteDialog(code) {
+      this.$refs.DeleteScheduleDialog._setCode(code);
     },
     _validateData() {
       console.log("aqui");
@@ -119,16 +132,6 @@ export default {
         endAppointment > startAgenda &&
         endAppointment <= endAgenda
       );
-    },
-    _validateDate(appointmentDate) {
-      let today = new Date();
-      const dd = String(today.getDate()).padStart(2, "0");
-      const mm = String(today.getMonth() + 1).padStart(2, "0");
-      const yyyy = today.getFullYear();
-
-      const currentDate = `${yyyy}-${mm}-${dd}`;
-
-      return appointmentDate !== currentDate;
     }
   }
 };
