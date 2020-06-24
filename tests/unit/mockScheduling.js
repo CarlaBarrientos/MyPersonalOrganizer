@@ -1,7 +1,7 @@
 export default {
   scheduledAppointments: [
     {
-      code: "1",
+      code: "sched-1",
       name: "Dentist",
       description: "I need to go to dentist",
       date: "2020-06-12",
@@ -11,7 +11,7 @@ export default {
       participants: []
     },
     {
-      code: "2",
+      code: "sched-2",
       name: "Dentist",
       description: "I need to go to dentist",
       date: "2020-06-12",
@@ -21,7 +21,7 @@ export default {
       participants: []
     },
     {
-      code: "3",
+      code: "sched-3",
       name: "Dentist",
       description: "I need to go to dentist",
       date: "2020-06-12",

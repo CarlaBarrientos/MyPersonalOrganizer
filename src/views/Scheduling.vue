@@ -75,22 +75,11 @@ import DeleteScheduleDialog from "../components/DeleteScheduleDialog.vue";
 import UpdateScheduleDialog from "../components/UpdateScheduleDialog.vue";
 
 import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
 
 export default {
   name: "Scheduling",
   data() {
     return {
-      code: "6",
-      name: "",
-      description: "",
-      date: "",
-      startHour: "",
-      endHour: "",
-      agendaId: "",
-      participants: [],
-      agendaStartHour: "",
-      agendaEndHour: "",
       showCreateDialog: false,
       showDeleteDialog: false,
       showUpdateDialog: false
@@ -111,36 +100,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["modifySchedule"]),
     updateDialog(code) {
       this.$refs.UpdateScheduleDialog._setCode(code);
     },
     deleteDialog(code) {
       this.$refs.DeleteScheduleDialog._setCode(code);
-    },
-    _validateData() {
-      console.log("aqui");
-      return (
-        this.code !== "" &&
-        this.name !== "" &&
-        this.description !== "" &&
-        this.date !== "" &&
-        this.startHour !== "" &&
-        this.endHour !== "" &&
-        this.agendaId !== ""
-      );
-    },
-    _validateHoursRange() {
-      const startAgenda = parseInt(this.agendaStartHour.split(":")[0]);
-      const endAgenda = parseInt(this.agendaEndHour.split(":")[0]);
-      const startAppointment = parseInt(this.startHour.split(":")[0]);
-      const endAppointment = parseInt(this.endHour.split(":")[0]);
-      return (
-        startAppointment >= startAgenda &&
-        startAppointment < endAgenda &&
-        endAppointment > startAgenda &&
-        endAppointment <= endAgenda
-      );
     }
   }
 };
