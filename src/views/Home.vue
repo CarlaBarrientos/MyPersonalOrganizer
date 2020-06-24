@@ -4,6 +4,7 @@
 
 <script>
 export default {
-  name: "Home"
+  name: "Home",
+  components: {}
 };
 </script>
