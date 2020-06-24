@@ -52,8 +52,11 @@ export default {
   methods: {
     ...mapActions(["deleteSched"]),
     deleteSchedule(codeToDelete) {
-      if (this._validateDate()) {
+      if (this._validateDate(this.getDate())) {
         this.deleteSched(codeToDelete);
+        this.dialog = false;
+      } else {
+        alert("Can't delete this appointment it will be postponed!");
         this.dialog = false;
       }
     },
@@ -77,6 +80,16 @@ export default {
         );
         if (appointment !== undefined) {
           return appointment.name;
+        }
+      }
+    },
+    getDate() {
+      if (this.code !== "") {
+        const appointment = this.scheduled.find(
+          sched => sched.code === this.code
+        );
+        if (appointment !== undefined) {
+          return appointment.date;
         }
       }
     }

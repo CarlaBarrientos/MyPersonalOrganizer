@@ -32,14 +32,26 @@
               <div class="grey--text">Agenda: {{ appointment.agendaId }}</div>
             </v-card-text>
             <v-card-actions>
-              <v-btn
-                @click.stop="
-                  deleteDialog(appointment.code);
-                  showDeleteDialog = true;
-                "
-                >Delete</v-btn
-              >
-              <v-btn>Update</v-btn>
+              <v-layout row wrap justify-space-around class="pb-3">
+                <v-btn
+                  @click.stop="
+                    deleteDialog(appointment.code);
+                    showDeleteDialog = true;
+                  "
+                >
+                  <v-icon>mdi-trash-can-outline</v-icon>
+                  <span>Delete</span>
+                </v-btn>
+                <v-btn
+                  @click.stop="
+                    updateDialog(appointment.code);
+                    showUpdateDialog = true;
+                  "
+                >
+                  <v-icon>mdi-pencil-outline</v-icon>
+                  <span>Update</span>
+                </v-btn>
+              </v-layout>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -50,12 +62,17 @@
       ref="DeleteScheduleDialog"
       v-model="showDeleteDialog"
     />
+    <UpdateScheduleDialog
+      ref="UpdateScheduleDialog"
+      v-model="showUpdateDialog"
+    />
   </div>
 </template>
 
 <script>
 import CreateScheduleDialog from "../components/CreateScheduleDialog.vue";
 import DeleteScheduleDialog from "../components/DeleteScheduleDialog.vue";
+import UpdateScheduleDialog from "../components/UpdateScheduleDialog.vue";
 
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
@@ -75,13 +92,15 @@ export default {
       agendaStartHour: "",
       agendaEndHour: "",
       showCreateDialog: false,
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      showUpdateDialog: false
     };
   },
 
   components: {
     CreateScheduleDialog,
-    DeleteScheduleDialog
+    DeleteScheduleDialog,
+    UpdateScheduleDialog
   },
 
   computed: {
@@ -93,18 +112,8 @@ export default {
 
   methods: {
     ...mapActions(["modifySchedule"]),
-    updateSchedule() {
-      if (this._validateData() && this._validateHoursRange()) {
-        this.modifySchedule({
-          code: this.code,
-          name: this.name,
-          description: this.description,
-          date: this.date,
-          startHour: this.startHour,
-          endHour: this.endHour,
-          agendaId: this.agendaId
-        });
-      }
+    updateDialog(code) {
+      this.$refs.UpdateScheduleDialog._setCode(code);
     },
     deleteDialog(code) {
       this.$refs.DeleteScheduleDialog._setCode(code);
