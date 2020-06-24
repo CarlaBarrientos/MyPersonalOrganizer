@@ -1,9 +1,12 @@
 import { assert } from "chai";
 import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
-import Participants from "@/components/Participants.vue";
-import store from "@/store";
+import Participants from "@/views/Participants.vue";
 import Vuex from "vuex";
-
+import mockParticipantStore from "./mockParticipant";
+import actions from "@/store/actions.js";
+import mutations from "@/store/mutations.js";
+import getters from "@/store/getters.js";
+let store;
 describe("Participants Logic", () => {
   let localVue;
   beforeEach(() => {
@@ -12,8 +15,15 @@ describe("Participants Logic", () => {
     global.alert = message => {
       console.log(message);
     };
+    store = new Vuex.Store({
+      state: mockParticipantStore,
+      actions,
+      mutations,
+      getters,
+      modules: {}
+    });
   });
-  it("Validate Data with Empty Fields", () => {
+  it("Validate Data with Missing Fields", () => {
     const wrapper = shallowMount(Participants);
     wrapper.vm.$data.name = "";
     wrapper.vm.$data.contactNumber = "";
@@ -76,14 +86,32 @@ describe("Participants Logic", () => {
     ).name;
     assert.equal(updatedParticipant, "Updated");
   });
+  it("Add Participant to an Invalid Appointment", () => {
+    const wrapper = mount(Participants, {
+      store,
+      localVue
+    });
+    let allAppointments = wrapper.vm.allAppointments;
+    wrapper.vm.$data.name = "TestAddingToAppointment";
+    wrapper.vm.$data.participantId = "PART-5";
+    wrapper.vm.$data.contactNumber = "70777777";
+    wrapper.vm.$data.appointmentCode = "SCH-2";
+    const expectedLength = allAppointments.find(
+      appointment => appointment.code === "SCH-1"
+    ).participants.length;
+    wrapper.vm.pushParticipantToAppointment();
+    assert.equal(
+      expectedLength,
+      allAppointments.find(appointment => appointment.code === "SCH-1")
+        .participants.length
+    );
+  });
   it("Add Participant to an Appointment", () => {
     const wrapper = mount(Participants, {
       store,
       localVue
     });
-    let allAppointments = wrapper.vm.$store.state.scheduledAppointments.concat(
-      wrapper.vm.$store.state.recursiveAppointments
-    );
+    let allAppointments = wrapper.vm.allAppointments;
     wrapper.vm.$data.name = "TestAddingToAppointment";
     wrapper.vm.$data.participantId = "PART-5";
     wrapper.vm.$data.contactNumber = "70777777";
@@ -98,25 +126,44 @@ describe("Participants Logic", () => {
         .participants.length
     );
   });
+  it("Remove Participant from Invalid Appointment", () => {
+    const wrapper = mount(Participants, {
+      store,
+      localVue
+    });
+    let allAppointments = wrapper.vm.allAppointments;
+    wrapper.vm.$data.name = "TestDeleteFromAppointment";
+    wrapper.vm.$data.participantId = "PART-5";
+    wrapper.vm.$data.contactNumber = "70777777";
+    wrapper.vm.$data.appointmentCode = "SCH-2";
+    const expectedLength = allAppointments.find(
+      appointment => appointment.code === "SCH-1"
+    ).participants.length;
+    wrapper.vm.removeParticipantFromAppointment();
+    assert.equal(
+      expectedLength,
+      allAppointments.find(appointment => appointment.code === "SCH-1")
+        .participants.length
+    );
+  });
   it("Remove Participant from Appointment", () => {
     const wrapper = mount(Participants, {
       store,
       localVue
     });
-    let allAppointments = wrapper.vm.$store.state.scheduledAppointments.concat(
-      wrapper.vm.$store.state.recursiveAppointments
-    );
+    let allAppointments = wrapper.vm.allAppointments;
     wrapper.vm.$data.name = "TestDeleteFromAppointment";
     wrapper.vm.$data.participantId = "PART-5";
     wrapper.vm.$data.contactNumber = "70777777";
-    wrapper.vm.$data.appointmentCode = "SCH-1";
+    wrapper.vm.$data.appointmentCode = "REC-1";
+    wrapper.vm.pushParticipantToAppointment();
     const actualLength = allAppointments.find(
-      appointment => appointment.code === "SCH-1"
+      appointment => appointment.code === "REC-1"
     ).participants.length;
     wrapper.vm.removeParticipantFromAppointment();
     assert.equal(
       actualLength - 1,
-      allAppointments.find(appointment => appointment.code === "SCH-1")
+      allAppointments.find(appointment => appointment.code === "REC-1")
         .participants.length
     );
   });

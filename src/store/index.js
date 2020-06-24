@@ -1,23 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import actions from "@/store/actions.js";
-import mutations from "@/store/mutations.js";
-import getters from "@/store/getters.js";
+import actions from "./actions.js";
+import mutations from "./mutations.js";
+import getters from "./getters.js";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     agendas: [],
-    scheduledAppointments: [{ code: "SCH-1", participants: [] }],
+    scheduledAppointments: [],
     postponedAppointments: [],
-    recursiveAppointments: [{ code: "REC-1", participants: [] }],
-    participants: [
-      {
-        participantId: "PART-5",
-        name: "Andres Gamboa",
-        contactNumber: "70777777"
-      }
-    ]
+    recursiveAppointments: [],
+    participants: []
   },
   actions,
   mutations,

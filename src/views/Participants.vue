@@ -15,6 +15,10 @@ export default {
   },
   computed: {
     ...mapGetters(["getParticipantsList"]),
+    ...mapGetters(["getAllAppointmentsList"]),
+    allAppointments() {
+      return this.getAllAppointmentsList;
+    },
     participants() {
       return this.getParticipantsList;
     }
@@ -51,39 +55,55 @@ export default {
     },
     pushParticipantToAppointment() {
       if (this._validateFields()) {
-        //Missing Appointment Exists Exception to implement when having
-        this.participants.forEach(participant => {
-          if (participant.participantId === this.participantId) {
-            this.addParticipantToAppointment({
-              appointmentCode: this.appointmentCode,
-              participantId: participant.participantId,
-              name: participant.name,
-              contactNumber: participant.contactNumber
-            });
-          }
-        });
+        if (this._appointmentExists()) {
+          this.participants.forEach(participant => {
+            if (participant.participantId === this.participantId) {
+              this.addParticipantToAppointment({
+                appointmentCode: this.appointmentCode,
+                participantId: participant.participantId,
+                name: participant.name,
+                contactNumber: participant.contactNumber
+              });
+            }
+          });
+        } else {
+          alert("Invalid Appointment Code");
+        }
       } else {
         alert("Verify Input Fields");
       }
     },
     removeParticipantFromAppointment() {
       if (this._validateFields()) {
-        this.participants.forEach(participant => {
-          if (participant.participantId === this.participantId) {
-            this.deleteParticipantFromAppointment({
-              appointmentCode: this.appointmentCode,
-              participantId: participant.participantId,
-              name: participant.name,
-              contactNumber: participant.contactNumber
-            });
-          }
-        });
+        if (this._appointmentExists()) {
+          this.participants.forEach(participant => {
+            if (participant.participantId === this.participantId) {
+              this.deleteParticipantFromAppointment({
+                appointmentCode: this.appointmentCode,
+                participantId: participant.participantId,
+                name: participant.name,
+                contactNumber: participant.contactNumber
+              });
+            }
+          });
+        } else {
+          alert("Invalid Appointment Code");
+        }
       } else {
         alert("Verify Input Fields");
       }
     },
     _calculateID() {
       return "PART-" + this.participants.length.toString();
+    },
+    _appointmentExists() {
+      let exists = false;
+      this.allAppointments.forEach(appointment => {
+        if (appointment.code === this.appointmentCode) {
+          exists = true;
+        }
+      });
+      return exists;
     }
   }
 };
