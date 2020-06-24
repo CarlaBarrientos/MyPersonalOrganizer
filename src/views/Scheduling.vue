@@ -112,6 +112,7 @@ export default {
       }
     },
     _validateData() {
+      console.log("aqui");
       return (
         this.code !== "" &&
         this.name !== "" &&

@@ -1,24 +1,42 @@
 import { assert } from "chai";
-import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 import Scheduling from "@/views/Scheduling.vue";
 
-import store from "@/store";
 import Vuex from "vuex";
+
+import actions from "@/store/actions.js";
+import mutations from "@/store/mutations.js";
+import getters from "@/store/getters.js";
+import mockScheduling from "./mockScheduling";
 
 describe("Scheduling appointmets/meetings module", () => {
   let localVue;
+  let store;
 
   beforeEach(() => {
     localVue = createLocalVue();
     localVue.use(Vuex);
+
+    store = new Vuex.Store({
+      state: mockScheduling,
+      actions,
+      mutations,
+      getters
+    });
   });
   it("Validate data when fields are empty.", () => {
-    const wrapper = shallowMount(Scheduling);
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
     const invalidData = wrapper.vm._validateData();
     assert.isFalse(invalidData);
   });
   it("Validate data when all fields are filled.", () => {
-    const wrapper = shallowMount(Scheduling);
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
 
     wrapper.vm.$data.code = "1";
     wrapper.vm.$data.name = "presentation";
@@ -32,7 +50,10 @@ describe("Scheduling appointmets/meetings module", () => {
     assert.isTrue(validData);
   });
   it("Validate that the begin/end hours are within the agenda's hours range.", () => {
-    const wrapper = shallowMount(Scheduling);
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
 
     wrapper.vm.$data.code = "1";
     wrapper.vm.$data.name = "presentation";
@@ -75,8 +96,8 @@ describe("Scheduling appointmets/meetings module", () => {
       localVue
     });
 
-    let expectedName = "presentation";
-    let expectedDate = "2020-06-21";
+    let expectedName = "Dentist";
+    let expectedDate = "2020-06-12";
     let expectedAgendaId = "1";
 
     const actualScheduled = wrapper.vm.$store.state.scheduledAppointments.find(
@@ -88,16 +109,16 @@ describe("Scheduling appointmets/meetings module", () => {
     assert.equal(actualScheduled.agendaId, expectedAgendaId);
 
     wrapper.vm.$data.code = "1";
-    wrapper.vm.$data.name = "presentation2";
-    wrapper.vm.$data.description = "final project presentation";
+    wrapper.vm.$data.name = "presentation";
+    wrapper.vm.$data.description = "I need to go to dentist";
     wrapper.vm.$data.date = "2020-06-22";
     wrapper.vm.$data.startHour = "10:00";
-    wrapper.vm.$data.endHour = "12:00";
+    wrapper.vm.$data.endHour = "11:00";
     wrapper.vm.$data.agendaId = "3";
 
     wrapper.vm.updateSchedule();
 
-    expectedName = "presentation2";
+    expectedName = "presentation";
     expectedDate = "2020-06-22";
     expectedAgendaId = "3";
 
@@ -110,8 +131,11 @@ describe("Scheduling appointmets/meetings module", () => {
     assert.equal(updatedScheduled.agendaId, expectedAgendaId);
   });
   it("Validate the current date before deleting.", () => {
-    const wrapper = shallowMount(Scheduling);
-    const invalidDate = wrapper.vm._validateDate("2020-06-21");
+    const wrapper = mount(Scheduling, {
+      store,
+      localVue
+    });
+    const invalidDate = wrapper.vm._validateDate("2020-06-23");
     assert.isFalse(invalidDate);
     const validDate = wrapper.vm._validateDate("2020-06-22");
     assert.isTrue(validDate);
@@ -122,9 +146,9 @@ describe("Scheduling appointmets/meetings module", () => {
       localVue
     });
 
-    const expectedLength = 0;
+    const expectedLength = 2;
     wrapper.vm.$data.code = "1";
-    wrapper.vm.deleteSchedule();
+    wrapper.vm.deleteSchedule("1");
     assert.equal(
       expectedLength,
       wrapper.vm.$store.state.scheduledAppointments.length
