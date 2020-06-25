@@ -1,11 +1,44 @@
+"use strict";
+const addSchedule = ({ commit }, newSchedule) => {
+  commit("mutateAddSchedule", newSchedule);
+};
+const modifySchedule = ({ commit }, scheduleToUpdate) => {
+  commit("mutateModifySchedule", scheduleToUpdate);
+};
+const deleteSched = ({ commit }, code) => {
+  commit("mutateDeleteSchedule", code);
+};
+const createParticipant = ({ commit }, newParticipant) => {
+  commit("mutateCreateParticipant", newParticipant);
+};
+const updateParticipant = ({ commit }, participantToUpdate) => {
+  commit("mutateUpdateParticipant", participantToUpdate);
+};
+const addParticipantToAppointment = ({ commit }, participantToAdd) => {
+  commit("mutateAddParticipantToAppointment", participantToAdd);
+};
+const deleteParticipantFromAppointment = ({ commit }, participantToDelete) => {
+  commit("mutateDeleteParticipantFromAppointment", participantToDelete);
+};
+const deleteParticipant = ({ commit }, participantToDelete) => {
+  commit("mutateDeleteParticipant", participantToDelete);
+};
+const addPpdAppointment = ({ commit }, newppdAppointment) => {
+  commit("mutatePostponeAppointment", newppdAppointment);
+};
+const modifyPpdAppointment = ({ commit }, appointmentToUpdate) => {
+  commit("mutateModifyPpdAppointment", appointmentToUpdate);
+};
+const deletePpdAppointment = ({ commit }, code) => {
+  commit("mutateDeletePpdAppointment", code);
+};
 export default {
-  addPpdAppointment({ commit }, newppdAppointment) {
-    commit("mutatePostponeAppointment", newppdAppointment);
-  },
-  modifyPpdAppointment({ commit }, appointmentToUpdate) {
-    commit("mutateModifyPpdAppointment", appointmentToUpdate);
-  },
-  deletePpdAppointment({ commit }, code) {
-    commit("mutateDeletePpdAppointment", code);
-  }
+  addSchedule,
+  modifySchedule,
+  deleteSched,
+  createParticipant,
+  updateParticipant,
+  addParticipantToAppointment,
+  deleteParticipantFromAppointment,
+  deleteParticipant
 };
