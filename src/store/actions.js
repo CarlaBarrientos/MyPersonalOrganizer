@@ -8,8 +8,28 @@ const modifySchedule = ({ commit }, scheduleToUpdate) => {
 const deleteSched = ({ commit }, code) => {
   commit("mutateDeleteSchedule", code);
 };
+const createParticipant = ({ commit }, newParticipant) => {
+  commit("mutateCreateParticipant", newParticipant);
+};
+const updateParticipant = ({ commit }, participantToUpdate) => {
+  commit("mutateUpdateParticipant", participantToUpdate);
+};
+const addParticipantToAppointment = ({ commit }, participantToAdd) => {
+  commit("mutateAddParticipantToAppointment", participantToAdd);
+};
+const deleteParticipantFromAppointment = ({ commit }, participantToDelete) => {
+  commit("mutateDeleteParticipantFromAppointment", participantToDelete);
+};
+const deleteParticipant = ({ commit }, participantToDelete) => {
+  commit("mutateDeleteParticipant", participantToDelete);
+};
 export default {
   addSchedule,
   modifySchedule,
-  deleteSched
+  deleteSched,
+  createParticipant,
+  updateParticipant,
+  addParticipantToAppointment,
+  deleteParticipantFromAppointment,
+  deleteParticipant
 };
