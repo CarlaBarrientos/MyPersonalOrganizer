@@ -3,17 +3,22 @@
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
         <v-card-title>
-          <span class="headline">Add New Appointment</span>
+          <span class="headline">Enable Appointment</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="name" label="Name"></v-text-field>
+                <v-text-field
+                  v-model="name"
+                  disabled
+                  label="Name"
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="description"
+                  disabled
                   label="Description"
                 ></v-text-field>
               </v-col>
@@ -58,7 +63,7 @@
           <v-btn color="blue darken-1" text @click.stop="dialog = false"
             >Cancel</v-btn
           >
-          <v-btn color="blue darken-1" text @click="updateSchedule()"
+          <v-btn color="blue darken-1" text @click="addNewSchedule()"
             >Save</v-btn
           >
         </v-card-actions>
@@ -72,10 +77,9 @@ import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "CreateScheduleDialog",
+  name: "EnablePpdAppointmentDialog",
   data() {
     return {
-      code: "",
       name: "",
       description: "",
       date: "",
@@ -92,9 +96,9 @@ export default {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getScheduledList"]),
-    scheduled() {
-      return this.getScheduledList;
+    ...mapGetters(["getPpdAppointmentsList"]),
+    postponed() {
+      return this.getPpdAppointmentsList;
     },
     dialog: {
       get() {
@@ -106,11 +110,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["modifySchedule"]),
-    updateSchedule() {
+    ...mapActions(["addSchedule"]),
+    ...mapActions(["deletePpdAppointment"]),
+    addNewSchedule() {
       if (this._validateData()) {
         if (this._validateHoursRange()) {
-          this.modifySchedule({
+          this.addSchedule({
             code: this.code,
             name: this.name,
             description: this.description,
@@ -119,6 +124,7 @@ export default {
             endHour: this.endHour,
             agendaId: this.agendaId
           });
+          this.deletePpdAppointment(this.code);
           this.dialog = false;
           this.name = "";
           this.description = "";
@@ -156,18 +162,19 @@ export default {
         endAppointment <= endAgenda
       );
     },
+    _selfGenerateCode() {
+      const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
+      const newNumber = parseInt(code.split("-")[1]) + 1;
+      return "sched-" + newNumber;
+    },
     _setCode(code) {
       this.code = code;
-      const appointment = this.scheduled.find(
+      const appointment = this.postponed.find(
         sched => sched.code === this.code
       );
       if (appointment !== undefined) {
         this.name = appointment.name;
         this.description = appointment.description;
-        this.date = appointment.date;
-        this.startHour = appointment.startHour;
-        this.endHour = appointment.endHour;
-        this.agendaId = appointment.agendaId;
       }
     }
   }

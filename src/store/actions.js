@@ -40,5 +40,8 @@ export default {
   updateParticipant,
   addParticipantToAppointment,
   deleteParticipantFromAppointment,
-  deleteParticipant
+  deleteParticipant,
+  addPpdAppointment,
+  modifyPpdAppointment,
+  deletePpdAppointment
 };

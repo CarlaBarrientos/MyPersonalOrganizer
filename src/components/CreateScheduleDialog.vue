@@ -3,7 +3,7 @@
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
         <v-card-title>
-          <span class="headline">Add New Appiontment</span>
+          <span class="headline">Add New Appointment</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -84,7 +84,7 @@ export default {
       participants: [],
       agendaStartHour: "11:00",
       agendaEndHour: "17:00",
-      agendas: ["agenda1", "agenda2", "agenda3"]
+      agendas: ["ANG-001", "ANG-002", "ANG-003"]
     };
   },
   props: {

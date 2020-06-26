@@ -15,7 +15,7 @@ const state = {
       date: "2020-06-12",
       startHour: "10:00",
       endHour: "11:00",
-      agendaId: "ANG-0001",
+      agendaId: "ANG-001",
       participants: []
     },
     {
@@ -25,7 +25,7 @@ const state = {
       date: "2020-06-12",
       startHour: "10:00",
       endHour: "11:00",
-      agendaId: "ANG-0001",
+      agendaId: "ANG-001",
       participants: []
     },
     {
@@ -35,11 +35,27 @@ const state = {
       date: "2020-06-12",
       startHour: "10:00",
       endHour: "11:00",
-      agendaId: "ANG-0001",
+      agendaId: "ANG-001",
       participants: []
     }
   ],
-  postponedAppointments: [],
+  postponedAppointments: [
+    {
+      code: "sched-4",
+      name: "Dentist",
+      description: "I need to go to the dentist"
+    },
+    {
+      code: "sched-5",
+      name: "Doctor",
+      description: "I need to go to the doctor"
+    },
+    {
+      code: "sched-6",
+      name: "University",
+      description: "I need to go to my university"
+    }
+  ],
   recursiveAppointments: [],
   participants: []
 };
