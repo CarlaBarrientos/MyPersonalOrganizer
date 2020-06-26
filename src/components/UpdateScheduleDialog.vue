@@ -81,7 +81,7 @@ export default {
       participants: [],
       agendaStartHour: "11:00",
       agendaEndHour: "17:00",
-      agendas: ["agenda1", "agenda2", "agenda3"]
+      agendas: ["ANG-001", "ANG-002", "ANG-003"]
     };
   },
   props: {

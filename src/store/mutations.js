@@ -1,4 +1,5 @@
 "use strict";
+//Schedule Appointments
 const mutateAddSchedule = (state, newSchedule) => {
   state.scheduledAppointments.push(newSchedule);
 };
@@ -20,6 +21,29 @@ const mutateDeleteSchedule = (state, code) => {
     );
   }
 };
+// Postponing Appointments
+const mutatePostponeAppointment = (state, newPpdAppointments) => {
+  state.postponedAppointments.push(newPpdAppointments);
+};
+const mutateModifyPpdAppointment = (state, appointmentToUpdate) => {
+  const indexToUpdate = state.postponedAppointments.findIndex(
+    appointment => appointment.code === appointmentToUpdate.code
+  );
+  if (indexToUpdate > -1) {
+    state.postponedAppointments.splice(indexToUpdate, 1, appointmentToUpdate);
+  }
+};
+const mutateDeletePpdAppointment = (state, code) => {
+  const indexToDelete = state.postponedAppointments.findIndex(
+    appointment => appointment.code === code
+  );
+  if (indexToDelete > -1) {
+    state.postponedAppointments = state.postponedAppointments.filter(
+      appointment => appointment.code !== code
+    );
+  }
+};
+// Participants
 const mutateCreateParticipant = (state, newParticipant) => {
   state.participants.push(newParticipant);
 };
@@ -94,6 +118,9 @@ export default {
   mutateAddSchedule,
   mutateModifySchedule,
   mutateDeleteSchedule,
+  mutatePostponeAppointment,
+  mutateModifyPpdAppointment,
+  mutateDeletePpdAppointment,
   mutateCreateParticipant,
   mutateUpdateParticipant,
   mutateAddParticipantToAppointment,
