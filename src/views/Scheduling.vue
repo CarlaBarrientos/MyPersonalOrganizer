@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 <template>
   <div>
-    <v-container class="my-10" grid-list-md>
+    <v-container class="my-5" grid-list-md>
       <H1>Appointments/Meetings</H1>
       <br />
       <v-btn

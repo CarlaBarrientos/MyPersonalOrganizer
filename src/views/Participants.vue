@@ -1,5 +1,52 @@
 <template>
-  <div></div>
+  <v-container md auto class="my-10" grid-list-md>
+    <H1>Participants</H1>
+    <v-card
+      flat
+      class="pa3"
+      v-for="participant in participants"
+      :key="participant.participantId"
+    >
+      <v-layout row wrap justify-center>
+        <v-flex xs1 md1>
+          <div class>
+            <div class="caption.grey--text">ID</div>
+            <v-chip outlined small color="orange" text-color="orange">
+              {{ participant.participantId }}
+              <v-icon right>mdi-account-outline</v-icon>
+            </v-chip>
+          </div>
+        </v-flex>
+        <v-flex xs2 sm2>
+          <div class="caption.grey--text">Name</div>
+          <div>{{ participant.name }}</div>
+        </v-flex>
+        <v-flex xs2 sm2>
+          <div class="caption.grey--text">Contact Number</div>
+          <div>{{ participant.contactNumber }}</div>
+        </v-flex>
+        <v-flex xs1 md1>
+          <div>
+            <v-chip
+              @click="removeParticipant"
+              color="amber accent-2"
+              text-color="white"
+            >
+              Update
+            </v-chip>
+          </div>
+        </v-flex>
+        <v-flex xs1 md1>
+          <div>
+            <v-chip @click="removeParticipant" color="red" text-color="white">
+              <v-icon right>mdi-delete</v-icon>
+            </v-chip>
+          </div>
+        </v-flex>
+      </v-layout>
+      <v-divider></v-divider>
+    </v-card>
+  </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
