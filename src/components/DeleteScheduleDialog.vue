@@ -2,11 +2,11 @@
   <div>
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
-        <v-card-title>
+        <v-card-text>
           <span class="headline"
             >Are you sure you want to delete {{ getName() }} appointment?</span
           >
-        </v-card-title>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click.stop="dialog = false"
@@ -29,7 +29,13 @@ export default {
   name: "DeleteScheduleDialog",
   data() {
     return {
-      code: ""
+      code: "",
+      name: "",
+      description: "",
+      date: "",
+      startHour: "",
+      endHour: "",
+      agendaId: ""
     };
   },
   props: {
@@ -51,12 +57,19 @@ export default {
   },
   methods: {
     ...mapActions(["deleteSched"]),
+    ...mapActions(["addPpdAppointment"]),
     deleteSchedule(codeToDelete) {
-      if (this._validateDate(this.getDate())) {
+      if (this._validateDate(this._getAppointmentDate())) {
         this.deleteSched(codeToDelete);
         this.dialog = false;
       } else {
         alert("Can't delete this appointment it will be postponed!");
+        this.addPpdAppointment({
+          code: codeToDelete,
+          name: this.name,
+          description: this.description
+        });
+        this.deleteSched(codeToDelete);
         this.dialog = false;
       }
     },
@@ -72,6 +85,17 @@ export default {
     },
     _setCode(code) {
       this.code = code;
+      const appointment = this.scheduled.find(
+        sched => sched.code === this.code
+      );
+      if (appointment !== undefined) {
+        this.name = appointment.name;
+        this.description = appointment.description;
+        this.date = appointment.date;
+        this.startHour = appointment.startHour;
+        this.endHour = appointment.endHour;
+        this.agendaId = appointment.agendaId;
+      }
     },
     getName() {
       if (this.code !== "") {
@@ -83,7 +107,7 @@ export default {
         }
       }
     },
-    getDate() {
+    _getAppointmentDate() {
       if (this.code !== "") {
         const appointment = this.scheduled.find(
           sched => sched.code === this.code

@@ -3,22 +3,27 @@
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
         <v-card-title>
-          <span class="headline">Add New Appointment</span>
+          <span class="headline">Enable Appointment</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="name" label="Name"></v-text-field>
+                <v-text-field
+                  v-model="name"
+                  disabled
+                  label="Name"
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="description"
+                  disabled
                   label="Description"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
-                <v-menu :close-on-content-click="true" width="30">
+              <v-col cols="12">
+                <v-menu ref="menu1" :close-on-content-click="true">
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       :value="date"
@@ -27,16 +32,20 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="date"></v-date-picker>
+                  <v-date-picker
+                    no-title
+                    @input="menu1 = true"
+                    v-model="date"
+                  ></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="12">
                 <v-text-field
                   v-model="startHour"
                   label="Start Hour"
                 ></v-text-field>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="12">
                 <v-text-field v-model="endHour" label="End Hour"></v-text-field>
               </v-col>
               <v-col cols="12">
@@ -68,9 +77,10 @@ import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "CreateScheduleDialog",
+  name: "EnablePpdAppointmentDialog",
   data() {
     return {
+      code: "",
       name: "",
       description: "",
       date: "",
@@ -87,9 +97,9 @@ export default {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getScheduledList"]),
-    scheduled() {
-      return this.getScheduledList;
+    ...mapGetters(["getPpdAppointmentsList"]),
+    postponed() {
+      return this.getPpdAppointmentsList;
     },
     dialog: {
       get() {
@@ -102,11 +112,12 @@ export default {
   },
   methods: {
     ...mapActions(["addSchedule"]),
+    ...mapActions(["deletePpdAppointment"]),
     addNewSchedule() {
       if (this._validateData()) {
         if (this._validateHoursRange()) {
           this.addSchedule({
-            code: this._selfGenerateCode(),
+            code: this.code,
             name: this.name,
             description: this.description,
             date: this.date,
@@ -114,6 +125,7 @@ export default {
             endHour: this.endHour,
             agendaId: this.agendaId
           });
+          this.deletePpdAppointment(this.code);
           this.dialog = false;
           this.name = "";
           this.description = "";
@@ -151,10 +163,15 @@ export default {
         endAppointment <= endAgenda
       );
     },
-    _selfGenerateCode() {
-      const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
-      const newNumber = parseInt(code.split("-")[1]) + 1;
-      return "sched-" + newNumber;
+    _setCode(code) {
+      this.code = code;
+      const appointment = this.postponed.find(
+        sched => sched.code === this.code
+      );
+      if (appointment !== undefined) {
+        this.name = appointment.name;
+        this.description = appointment.description;
+      }
     }
   }
 };

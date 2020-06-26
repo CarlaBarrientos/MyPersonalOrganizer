@@ -3,7 +3,7 @@
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
         <v-card-title>
-          <span class="headline">Add New Appiontment</span>
+          <span class="headline">Update {{ getName() }} appointment</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -17,8 +17,8 @@
                   label="Description"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-menu ref="menu1" :close-on-content-click="true">
+              <v-col cols="6">
+                <v-menu :close-on-content-click="true" width="30">
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       :value="date"
@@ -27,20 +27,16 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    no-title
-                    @input="menu1 = true"
-                    v-model="date"
-                  ></v-date-picker>
+                  <v-date-picker v-model="date"></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="3">
                 <v-text-field
                   v-model="startHour"
                   label="Start Hour"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="3">
                 <v-text-field v-model="endHour" label="End Hour"></v-text-field>
               </v-col>
               <v-col cols="12">
@@ -85,7 +81,7 @@ export default {
       participants: [],
       agendaStartHour: "11:00",
       agendaEndHour: "17:00",
-      agendas: ["agenda1", "agenda2", "agenda3"]
+      agendas: ["ANG-001", "ANG-002", "ANG-003"]
     };
   },
   props: {
@@ -168,6 +164,16 @@ export default {
         this.startHour = appointment.startHour;
         this.endHour = appointment.endHour;
         this.agendaId = appointment.agendaId;
+      }
+    },
+    getName() {
+      if (this.code !== "") {
+        const appointment = this.scheduled.find(
+          sched => sched.code === this.code
+        );
+        if (appointment !== undefined) {
+          return appointment.name;
+        }
       }
     }
   }

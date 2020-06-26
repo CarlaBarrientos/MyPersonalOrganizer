@@ -1,12 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import actions from "./actions.js";
-import mutations from "./mutations.js";
-import getters from "./getters.js";
-Vue.use(Vuex);
-
-const state = {
-  agendas: [],
+export default {
   scheduledAppointments: [
     {
       code: "sched-1",
@@ -42,8 +34,8 @@ const state = {
   postponedAppointments: [
     {
       code: "sched-4",
-      name: "Dentist",
-      description: "I need to go to the dentist"
+      name: "Football",
+      description: "I need to go to the stadium"
     },
     {
       code: "sched-5",
@@ -55,31 +47,5 @@ const state = {
       name: "University",
       description: "I need to go to my university"
     }
-  ],
-  recursiveAppointments: [],
-  participants: [
-    {
-      participantId: "PART-5",
-      name: "Andres Gamboa",
-      contactNumber: "70777777"
-    },
-    {
-      participantId: "PART-6",
-      name: "TestUpdate",
-      contactNumber: "70777777"
-    },
-    {
-      participantId: "PART-7",
-      name: "TestDelete",
-      contactNumber: "70777777"
-    }
   ]
 };
-
-export default new Vuex.Store({
-  state,
-  actions,
-  mutations,
-  getters,
-  modules: {}
-});

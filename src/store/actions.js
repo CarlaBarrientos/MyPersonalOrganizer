@@ -23,6 +23,15 @@ const deleteParticipantFromAppointment = ({ commit }, participantToDelete) => {
 const deleteParticipant = ({ commit }, participantToDelete) => {
   commit("mutateDeleteParticipant", participantToDelete);
 };
+const addPpdAppointment = ({ commit }, newppdAppointment) => {
+  commit("mutatePostponeAppointment", newppdAppointment);
+};
+const modifyPpdAppointment = ({ commit }, appointmentToUpdate) => {
+  commit("mutateModifyPpdAppointment", appointmentToUpdate);
+};
+const deletePpdAppointment = ({ commit }, code) => {
+  commit("mutateDeletePpdAppointment", code);
+};
 export default {
   addSchedule,
   modifySchedule,
@@ -31,5 +40,8 @@ export default {
   updateParticipant,
   addParticipantToAppointment,
   deleteParticipantFromAppointment,
-  deleteParticipant
+  deleteParticipant,
+  addPpdAppointment,
+  modifyPpdAppointment,
+  deletePpdAppointment
 };
