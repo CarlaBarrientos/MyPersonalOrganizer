@@ -80,6 +80,7 @@ export default {
   name: "EnablePpdAppointmentDialog",
   data() {
     return {
+      code: "",
       name: "",
       description: "",
       date: "",
@@ -161,11 +162,6 @@ export default {
         endAppointment > startAgenda &&
         endAppointment <= endAgenda
       );
-    },
-    _selfGenerateCode() {
-      const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
-      const newNumber = parseInt(code.split("-")[1]) + 1;
-      return "sched-" + newNumber;
     },
     _setCode(code) {
       this.code = code;
