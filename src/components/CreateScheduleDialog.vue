@@ -17,8 +17,8 @@
                   label="Description"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-menu ref="menu1" :close-on-content-click="true">
+              <v-col cols="6">
+                <v-menu :close-on-content-click="true" width="30">
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       :value="date"
@@ -27,20 +27,16 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    no-title
-                    @input="menu1 = true"
-                    v-model="date"
-                  ></v-date-picker>
+                  <v-date-picker v-model="date"></v-date-picker>
                 </v-menu>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="3">
                 <v-text-field
                   v-model="startHour"
                   label="Start Hour"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
+              <v-col cols="3">
                 <v-text-field v-model="endHour" label="End Hour"></v-text-field>
               </v-col>
               <v-col cols="12">

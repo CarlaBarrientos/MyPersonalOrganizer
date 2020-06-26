@@ -2,11 +2,11 @@
   <div>
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
-        <v-card-title>
+        <v-card-text>
           <span class="headline"
             >Are you sure you want to delete {{ getName() }} appointment?</span
           >
-        </v-card-title>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click.stop="dialog = false"
@@ -52,7 +52,7 @@ export default {
   methods: {
     ...mapActions(["deleteSched"]),
     deleteSchedule(codeToDelete) {
-      if (this._validateDate(this.getDate())) {
+      if (this._validateDate(this._getAppointmentDate())) {
         this.deleteSched(codeToDelete);
         this.dialog = false;
       } else {
@@ -83,7 +83,7 @@ export default {
         }
       }
     },
-    getDate() {
+    _getAppointmentDate() {
       if (this.code !== "") {
         const appointment = this.scheduled.find(
           sched => sched.code === this.code

@@ -2,20 +2,41 @@
 <template>
   <div>
     <v-container class="my-10" grid-list-md>
-      <H1>Appointments/Meetings</H1>
+      <H1>Scheduled Appointments/Meetings</H1>
       <br />
-      <v-btn
-        long
-        depressed
-        color="#F2F2F2"
-        width="150px"
-        @click.stop="showCreateDialog = true"
-      >
-        <v-icon left small>mdi-plus-circle-outline</v-icon>
-        <span class="caption text-lowercase">Add New</span>
-      </v-btn>
       <v-layout row wrap>
-        <v-flex v-for="appointment in scheduled" :key="appointment.code">
+        <v-flex md3 class="pl-5">
+          <v-menu :close-on-content-click="true" width="60">
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                :value="date"
+                label="Date"
+                prepend-icon="mdi-calendar-range"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="date"></v-date-picker>
+          </v-menu>
+        </v-flex>
+        <v-flex md3 class="pl-5 pt-4">
+          <v-btn
+            long
+            outlined
+            class="text-capitalize"
+            color="blue-grey darken-2"
+            width="150px"
+            @click.stop="showCreateDialog = true"
+          >
+            <v-icon left small>mdi-plus-circle-outline</v-icon>
+            <span class="caption">Add New</span>
+          </v-btn>
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap justify-space-around>
+        <v-flex
+          v-for="appointment in filteredAppointments"
+          :key="appointment.code"
+        >
           <v-card class="mx-auto" max-width="344">
             <v-card-title>
               <div class="subheading">{{ appointment.name }}</div>
@@ -33,24 +54,58 @@
             </v-card-text>
             <v-card-actions>
               <v-layout row wrap justify-space-around class="pb-3">
-                <v-btn
-                  @click.stop="
-                    deleteDialog(appointment.code);
-                    showDeleteDialog = true;
-                  "
-                >
-                  <v-icon>mdi-trash-can-outline</v-icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="red"
+                      @click.stop="
+                        deleteDialog(appointment.code);
+                        showDeleteDialog = true;
+                      "
+                      v-on="on"
+                    >
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </template>
                   <span>Delete</span>
-                </v-btn>
-                <v-btn
-                  @click.stop="
-                    updateDialog(appointment.code);
-                    showUpdateDialog = true;
-                  "
-                >
-                  <v-icon>mdi-pencil-outline</v-icon>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="indigo"
+                      @click.stop="
+                        updateDialog(appointment.code);
+                        showUpdateDialog = true;
+                      "
+                      v-on="on"
+                    >
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                  </template>
                   <span>Update</span>
-                </v-btn>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn fab depressed dark color="blue-grey" v-on="on">
+                      <v-icon>mdi-calendar-remove-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Postpone</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn fab depressed dark color="deep-purple" v-on="on">
+                      <v-icon>mdi-account-multiple-plus-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Add participant</span>
+                </v-tooltip>
               </v-layout>
             </v-card-actions>
           </v-card>
@@ -82,7 +137,8 @@ export default {
     return {
       showCreateDialog: false,
       showDeleteDialog: false,
-      showUpdateDialog: false
+      showUpdateDialog: false,
+      date: this.currentDate()
     };
   },
 
@@ -96,6 +152,22 @@ export default {
     ...mapGetters(["getScheduledList"]),
     scheduled() {
       return this.getScheduledList;
+    },
+    filteredAppointments() {
+      const filteredList = this.scheduled.filter(
+        appointment => appointment.date === this.date
+      );
+      const orderedList = filteredList.sort(function(
+        appointment1,
+        appointment2
+      ) {
+        const hour1 = parseFloat(appointment1.startHour.replace(":", "."));
+        const hour2 = parseFloat(appointment2.startHour.replace(":", "."));
+        if (hour1 < hour2) return -1;
+        if (hour1 > hour2) return 1;
+        return 0;
+      });
+      return orderedList;
     }
   },
 
@@ -105,6 +177,16 @@ export default {
     },
     deleteDialog(code) {
       this.$refs.DeleteScheduleDialog._setCode(code);
+    },
+    currentDate() {
+      let today = new Date();
+      const dd = String(today.getDate()).padStart(2, "0");
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const yyyy = today.getFullYear();
+
+      const currentDate = `${yyyy}-${mm}-${dd}`;
+
+      return currentDate;
     }
   }
 };
