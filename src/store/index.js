@@ -15,7 +15,7 @@ const state = {
       date: "2020-06-24",
       startHour: "10:00",
       endHour: "11:00",
-      agendaId: "ANG-0001",
+      agendaId: "ANG-001",
       participants: []
     },
     {
@@ -25,7 +25,7 @@ const state = {
       date: "2020-06-24",
       startHour: "12:00",
       endHour: "15:00",
-      agendaId: "ANG-0001",
+      agendaId: "ANG-001",
       participants: []
     },
     {
@@ -35,7 +35,7 @@ const state = {
       date: "2020-06-24",
       startHour: "14:00",
       endHour: "15:00",
-      agendaId: "ANG-0001",
+      agendaId: "ANG-001",
       participants: []
     }
   ],

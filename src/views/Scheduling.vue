@@ -92,7 +92,17 @@
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
-                    <v-btn fab depressed dark color="blue-grey" v-on="on">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="blue-grey"
+                      @click.stop="
+                        postponeAppointmentDialog(appointment.code);
+                        showPostponeDialog = true;
+                      "
+                      v-on="on"
+                    >
                       <v-icon>mdi-calendar-remove-outline</v-icon>
                     </v-btn>
                   </template>
@@ -121,6 +131,7 @@
       ref="UpdateScheduleDialog"
       v-model="showUpdateDialog"
     />
+    <PostponeDialog ref="PostponeDialog" v-model="showPostponeDialog" />
   </div>
 </template>
 
@@ -128,6 +139,7 @@
 import CreateScheduleDialog from "../components/CreateScheduleDialog.vue";
 import DeleteScheduleDialog from "../components/DeleteScheduleDialog.vue";
 import UpdateScheduleDialog from "../components/UpdateScheduleDialog.vue";
+import PostponeDialog from "../components/PostponeAppointmentDialog.vue";
 
 import { mapGetters } from "vuex";
 
@@ -138,6 +150,7 @@ export default {
       showCreateDialog: false,
       showDeleteDialog: false,
       showUpdateDialog: false,
+      showPostponeDialog: false,
       date: this.currentDate()
     };
   },
@@ -145,7 +158,8 @@ export default {
   components: {
     CreateScheduleDialog,
     DeleteScheduleDialog,
-    UpdateScheduleDialog
+    UpdateScheduleDialog,
+    PostponeDialog
   },
 
   computed: {
@@ -177,6 +191,9 @@ export default {
     },
     deleteDialog(code) {
       this.$refs.DeleteScheduleDialog._setCode(code);
+    },
+    postponeAppointmentDialog(code) {
+      this.$refs.PostponeDialog._setCode(code);
     },
     currentDate() {
       let today = new Date();
