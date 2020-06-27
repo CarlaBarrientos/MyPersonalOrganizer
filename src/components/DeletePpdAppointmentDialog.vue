@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog persistent max-width="405px" v-model="dialog">
+    <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
         <v-card-title>
           <span class="headline"

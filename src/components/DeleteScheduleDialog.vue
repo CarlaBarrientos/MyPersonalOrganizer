@@ -3,8 +3,12 @@
     <v-dialog persistent max-width="600px" v-model="dialog">
       <v-card>
         <v-card-text>
-          <span class="headline"
+          <span class="headline" v-if="_validateDate(_getAppointmentDate())"
             >Are you sure you want to delete {{ getName() }} appointment?</span
+          >
+          <span class="headline" v-else
+            >The appointment "{{ getName() }}" will be postponed, do you
+            agree?</span
           >
         </v-card-text>
         <v-card-actions>
@@ -63,7 +67,7 @@ export default {
         this.deleteSched(codeToDelete);
         this.dialog = false;
       } else {
-        alert("Can't delete this appointment it will be postponed!");
+        //alert("The appointment is now on postponed list");
         this.addPpdAppointment({
           code: codeToDelete,
           name: this.name,
