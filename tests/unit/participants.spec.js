@@ -1,6 +1,10 @@
 import { assert } from "chai";
 import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
-import Participants from "@/views/Participants.vue";
+import CreateParticipantsDialog from "@/components/CreateParticipantsDialog.vue";
+import DeleteParticipantsDialog from "@/components/DeleteParticipantsDialog.vue";
+import UpdateParticipantsDialog from "@/components/UpdateParticipantsDialog.vue";
+import AddParticipantDialog from "@/components/AddParticipantDialog.vue";
+import DeleteParticipantsFromAppointment from "@/components/DeleteParticipantsFromAppointment.vue";
 import Vuex from "vuex";
 import mockParticipantStore from "./mockParticipant";
 import actions from "@/store/actions.js";
@@ -25,21 +29,21 @@ describe("Participants Logic", () => {
     });
   });
   it("Validate Data with Missing Fields", () => {
-    const wrapper = shallowMount(Participants);
+    const wrapper = shallowMount(CreateParticipantsDialog);
     wrapper.vm.$data.name = "";
     wrapper.vm.$data.contactNumber = "";
     const isValid = wrapper.vm._validateFields();
     assert.isFalse(isValid);
   });
   it("Validate Data with Correct Data", () => {
-    const wrapper = shallowMount(Participants);
+    const wrapper = shallowMount(CreateParticipantsDialog);
     wrapper.vm.$data.name = "TestValidate";
     wrapper.vm.$data.contactNumber = "70777777";
     const isValid = wrapper.vm._validateFields();
     assert.isTrue(isValid);
   });
   it("Do not Create New Participant with Missing Fields", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(CreateParticipantsDialog, {
       store,
       localVue
     });
@@ -50,7 +54,7 @@ describe("Participants Logic", () => {
     assert.equal(initialLength, wrapper.vm.$store.state.participants.length);
   });
   it("Create New Participant with Correct Data", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(CreateParticipantsDialog, {
       store,
       localVue
     });
@@ -64,7 +68,7 @@ describe("Participants Logic", () => {
     );
   });
   it("Update Participant", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(UpdateParticipantsDialog, {
       store,
       localVue
     });
@@ -75,106 +79,69 @@ describe("Participants Logic", () => {
       participant => participant.participantId === idToUpdate
     ).name;
     assert.equal(oldParticipant, "TestUpdate");
-    wrapper.vm.$data.participantId = idToUpdate;
     wrapper.vm.$data.name = "Updated";
     wrapper.vm.$data.contactNumber = "70777777";
-    wrapper.vm.modifyParticipant();
+    wrapper.vm.modifyParticipant(idToUpdate);
     const updatedParticipant = wrapper.vm.$store.state.participants.find(
       participant => participant.participantId === idToUpdate
     ).name;
     assert.equal(updatedParticipant, "Updated");
   });
-  it("Do not Add Participant to an Invalid Appointment", () => {
-    const wrapper = mount(Participants, {
-      store,
-      localVue
-    });
-    let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.appointmentCode = "SCH-2";
-    const expectedLength = allAppointments.find(
-      appointment => appointment.code === "SCH-1"
-    ).participants.length;
-    wrapper.vm.pushParticipantToAppointment();
-    assert.equal(
-      expectedLength,
-      allAppointments.find(appointment => appointment.code === "SCH-1")
-        .participants.length
-    );
-  });
   it("Add Participant to an Appointment", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(AddParticipantDialog, {
       store,
       localVue
     });
     let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.appointmentCode = "SCH-1";
+    const participantId = "PART-10";
+    const code = "SCH-1";
+    wrapper.vm.code = code;
     const actualLength = allAppointments.find(
-      appointment => appointment.code === "SCH-1"
+      appointment => appointment.code === code
     ).participants.length;
-    wrapper.vm.pushParticipantToAppointment();
+    wrapper.vm.pushParticipantToAppointment(participantId);
     assert.equal(
       actualLength + 1,
-      allAppointments.find(appointment => appointment.code === "SCH-1")
-        .participants.length
-    );
-  });
-  it("Do not Remove Participant from Invalid Appointment", () => {
-    const wrapper = mount(Participants, {
-      store,
-      localVue
-    });
-    let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.appointmentCode = "SCH-2";
-    const expectedLength = allAppointments.find(
-      appointment => appointment.code === "SCH-1"
-    ).participants.length;
-    wrapper.vm.removeParticipantFromAppointment();
-    assert.equal(
-      expectedLength,
-      allAppointments.find(appointment => appointment.code === "SCH-1")
+      allAppointments.find(appointment => appointment.code === code)
         .participants.length
     );
   });
   it("Remove Participant from Appointment", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(DeleteParticipantsFromAppointment, {
       store,
       localVue
     });
     let allAppointments = wrapper.vm.allAppointments;
-    wrapper.vm.$data.participantId = "PART-5";
-    wrapper.vm.$data.appointmentCode = "REC-1";
-    wrapper.vm.pushParticipantToAppointment();
+    const participantId = "PART-7";
+    const code = "REC-1";
     const actualLength = allAppointments.find(
-      appointment => appointment.code === "REC-1"
+      appointment => appointment.code === code
     ).participants.length;
-    wrapper.vm.removeParticipantFromAppointment();
+    wrapper.vm.removeParticipantFromAppointment(participantId, code);
     assert.equal(
       actualLength - 1,
-      allAppointments.find(appointment => appointment.code === "REC-1")
+      allAppointments.find(appointment => appointment.code === code)
         .participants.length
     );
   });
   it("Delete Participant with no Future Appointment", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(DeleteParticipantsDialog, {
       store,
       localVue
     });
     const actualLength = wrapper.vm.$store.state.participants.length;
-    wrapper.vm.$data.participantId = "PART-8";
-    wrapper.vm.removeParticipant();
+    const participantId = "PART-8";
+    wrapper.vm.removeParticipant(participantId);
     assert.equal(actualLength - 1, wrapper.vm.$store.state.participants.length);
   });
   it("Do not Delete Participant with a Future Appointment", () => {
-    const wrapper = mount(Participants, {
+    const wrapper = mount(DeleteParticipantsDialog, {
       store,
       localVue
     });
-    wrapper.vm.$data.participantId = "PART-7";
+    const participantId = "PART-6";
     const actualLength = wrapper.vm.$store.state.participants.length;
-    wrapper.vm.removeParticipant();
+    wrapper.vm.removeParticipant(participantId);
     assert.equal(actualLength, wrapper.vm.$store.state.participants.length);
   });
 });

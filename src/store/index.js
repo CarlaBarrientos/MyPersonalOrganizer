@@ -16,7 +16,13 @@ const state = {
       startHour: "10:00",
       endHour: "11:00",
       agendaId: "ANG-001",
-      participants: []
+      participants: [
+        {
+          participantId: "PART-2",
+          name: "TestDelete",
+          contactNumber: "70777777"
+        }
+      ]
     },
     {
       code: "sched-2",
@@ -26,7 +32,23 @@ const state = {
       startHour: "12:00",
       endHour: "15:00",
       agendaId: "ANG-001",
-      participants: []
+      participants: [
+        {
+          participantId: "PART-2",
+          name: "TestDelete",
+          contactNumber: "70777777"
+        },
+        {
+          participantId: "PART-1",
+          name: "TestUpdate",
+          contactNumber: "70777777"
+        },
+        {
+          participantId: "PART-0",
+          name: "Andres Gamboa",
+          contactNumber: "70777777"
+        }
+      ]
     },
     {
       code: "sched-3",
@@ -59,17 +81,17 @@ const state = {
   recursiveAppointments: [],
   participants: [
     {
-      participantId: "PART-5",
+      participantId: "PART-0",
       name: "Andres Gamboa",
       contactNumber: "70777777"
     },
     {
-      participantId: "PART-6",
+      participantId: "PART-1",
       name: "TestUpdate",
       contactNumber: "70777777"
     },
     {
-      participantId: "PART-7",
+      participantId: "PART-2",
       name: "TestDelete",
       contactNumber: "70777777"
     }

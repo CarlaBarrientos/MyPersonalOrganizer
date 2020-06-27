@@ -73,46 +73,31 @@ const mutateAddParticipantToAppointment = (state, participantToAdd) => {
     }
   });
 };
-const mutateDeleteParticipantFromAppointment = (state, participantToDelete) => {
-  const participant = {
-    participantId: participantToDelete.participantId,
-    name: participantToDelete.name,
-    contactNumber: participantToDelete.contactNumber
-  };
+const mutateDeleteParticipantFromAppointment = (state, participantAndCode) => {
   let allAppointments = state.scheduledAppointments.concat(
     state.recursiveAppointments
   );
-  var indexOfItem;
+  let indexOfItem;
+  let participantDelete;
   allAppointments.forEach(appointment => {
-    if (appointment.code === participantToDelete.appointmentCode) {
-      indexOfItem = appointment.participants.indexOf(participant);
+    if (appointment.code === participantAndCode.appointmentCode) {
+      appointment.participants.forEach(participant => {
+        if (participantAndCode.participantId === participant.participantId)
+          participantDelete = participant;
+      });
+      indexOfItem = appointment.participants.indexOf(participantDelete);
       appointment.participants.splice(indexOfItem, 1);
     }
   });
 };
 const mutateDeleteParticipant = (state, participantToDelete) => {
-  let allAppointments = state.scheduledAppointments.concat(
-    state.recursiveAppointments
-  );
   var indexOfItem;
-  var onAppointment = false;
-  allAppointments.forEach(appointment => {
-    appointment.participants.forEach(participant => {
-      if (participant.participantId === participantToDelete.participantId) {
-        onAppointment = true;
-      }
-    });
+  state.participants.forEach(participant => {
+    if (participant.participantId === participantToDelete.participantId) {
+      indexOfItem = state.participants.indexOf(participant);
+      state.participants.splice(indexOfItem, 1);
+    }
   });
-  if (!onAppointment) {
-    state.participants.forEach(participant => {
-      if (participant.participantId === participantToDelete.participantId) {
-        indexOfItem = state.participants.indexOf(participant);
-        state.participants.splice(indexOfItem, 1);
-      }
-    });
-  } else {
-    alert("Cant Delete Participant, First Remove it from all Appointments");
-  }
 };
 export default {
   mutateAddSchedule,

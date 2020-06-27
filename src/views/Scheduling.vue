@@ -51,6 +51,32 @@
               </div>
               <div class="grey--text">End hour: {{ appointment.endHour }}</div>
               <div class="grey--text">Agenda: {{ appointment.agendaId }}</div>
+              <div class="grey--text">
+                Participants:
+              </div>
+              <div
+                v-for="participant in participantsOnAppointment(
+                  appointment.code
+                )"
+                :key="participant.participantId"
+              >
+                <v-chip small outlined color="black" text-color="black">
+                  {{ participant.name }}
+                </v-chip>
+                <v-btn
+                  icon
+                  color="red"
+                  @click="
+                    deleteParticipantDialog({
+                      code: appointment.code,
+                      participantId: participant.participantId
+                    });
+                    showDeleteParticipantDialog = true;
+                  "
+                >
+                  <v-icon>mdi-account-remove</v-icon>
+                </v-btn>
+              </div>
             </v-card-text>
             <v-card-actions>
               <v-layout row wrap justify-space-around class="pb-3">
@@ -110,7 +136,17 @@
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
-                    <v-btn fab depressed dark color="deep-purple" v-on="on">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="deep-purple"
+                      @click.stop="
+                        addDialog(appointment.code);
+                        showAddParticipantDialog = true;
+                      "
+                      v-on="on"
+                    >
                       <v-icon>mdi-account-multiple-plus-outline</v-icon>
                     </v-btn>
                   </template>
@@ -132,6 +168,14 @@
       v-model="showUpdateDialog"
     />
     <PostponeDialog ref="PostponeDialog" v-model="showPostponeDialog" />
+    <AddParticipantDialog
+      ref="AddParticipantDialog"
+      v-model="showAddParticipantDialog"
+    />
+    <DeleteParticipantsFromAppointment
+      ref="DeleteParticipantsFromAppointment"
+      v-model="showDeleteParticipantDialog"
+    />
   </div>
 </template>
 
@@ -140,6 +184,8 @@ import CreateScheduleDialog from "../components/CreateScheduleDialog.vue";
 import DeleteScheduleDialog from "../components/DeleteScheduleDialog.vue";
 import UpdateScheduleDialog from "../components/UpdateScheduleDialog.vue";
 import PostponeDialog from "../components/PostponeAppointmentDialog.vue";
+import AddParticipantDialog from "../components/AddParticipantDialog.vue";
+import DeleteParticipantsFromAppointment from "../components/DeleteParticipantsFromAppointment.vue";
 
 import { mapGetters } from "vuex";
 
@@ -151,6 +197,8 @@ export default {
       showDeleteDialog: false,
       showUpdateDialog: false,
       showPostponeDialog: false,
+      showAddParticipantDialog: false,
+      showDeleteParticipantDialog: false,
       date: this.currentDate()
     };
   },
@@ -159,11 +207,17 @@ export default {
     CreateScheduleDialog,
     DeleteScheduleDialog,
     UpdateScheduleDialog,
+    AddParticipantDialog,
+    DeleteParticipantsFromAppointment,
     PostponeDialog
   },
 
   computed: {
     ...mapGetters(["getScheduledList"]),
+    ...mapGetters(["getParticipantsList"]),
+    participants() {
+      return this.getParticipantsList;
+    },
     scheduled() {
       return this.getScheduledList;
     },
@@ -186,11 +240,26 @@ export default {
   },
 
   methods: {
+    participantsOnAppointment(appointmentCode) {
+      let foundParticipants = [];
+      this.scheduled.forEach(appointment => {
+        if (appointment.code === appointmentCode) {
+          foundParticipants = appointment.participants;
+        }
+      });
+      return foundParticipants;
+    },
+    addDialog(code) {
+      this.$refs.AddParticipantDialog._setCode(code);
+    },
     updateDialog(code) {
       this.$refs.UpdateScheduleDialog._setCode(code);
     },
     deleteDialog(code) {
       this.$refs.DeleteScheduleDialog._setCode(code);
+    },
+    deleteParticipantDialog(data) {
+      this.$refs.DeleteParticipantsFromAppointment.setData(data);
     },
     postponeAppointmentDialog(code) {
       this.$refs.PostponeDialog._setCode(code);
