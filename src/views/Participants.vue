@@ -1,17 +1,108 @@
 <template>
-  <div></div>
+  <div>
+    <v-container md auto class="my-10" grid-list-md>
+      <H1>Participants List</H1>
+      <v-flex md3 class="pl-0 pt-0">
+        <v-btn
+          long
+          class="text-capitalize"
+          color="green"
+          width="150px"
+          @click.stop="showCreateDialog = true"
+        >
+          <v-icon left small>mdi-plus-circle-outline</v-icon>
+          <span class="caption">Add New</span>
+        </v-btn>
+      </v-flex>
+      <v-card
+        hover
+        class="pa3"
+        v-for="participant in participants"
+        :key="participant.participantId"
+      >
+        <v-layout row wrap justify-space-around>
+          <v-flex xs2 md2>
+            <div class>
+              <div class="caption.grey--text">ID</div>
+              <v-chip outlined small color="black" text-color="black">
+                {{ participant.participantId }}
+                <v-icon right>mdi-account-outline</v-icon>
+              </v-chip>
+            </div>
+          </v-flex>
+          <v-flex xs2 sm2>
+            <div class="caption.grey--text">Name</div>
+            <div>{{ participant.name }}</div>
+          </v-flex>
+          <v-flex xs2 sm2>
+            <div class="caption.grey--text">Contact Number</div>
+            <div>{{ participant.contactNumber }}</div>
+          </v-flex>
+          <v-flex xs1 md1>
+            <div>
+              <v-btn
+                icon
+                @click="
+                  updateDialog(participant.participantId);
+                  showUpdateDialog = true;
+                "
+                color="amber accent-2"
+              >
+                <v-icon>mdi-pencil-outline</v-icon>
+              </v-btn>
+            </div>
+          </v-flex>
+          <v-flex xs1 md1>
+            <div>
+              <v-btn
+                icon
+                color="red"
+                @click.stop="
+                  deleteDialog(participant.participantId);
+                  showDeleteDialog = true;
+                "
+              >
+                <v-icon right>mdi-trash-can-outline</v-icon>
+              </v-btn>
+            </div>
+          </v-flex>
+        </v-layout>
+        <v-divider></v-divider>
+      </v-card>
+    </v-container>
+    <CreateParticipantsDialog v-model="showCreateDialog" />
+    <DeleteParticipantsDialog
+      ref="DeleteParticipantsDialog"
+      v-model="showDeleteDialog"
+    />
+    <UpdateParticipantsDialog
+      ref="UpdateParticipantsDialog"
+      v-model="showUpdateDialog"
+    />
+  </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
+import CreateParticipantsDialog from "../components/CreateParticipantsDialog.vue";
+import DeleteParticipantsDialog from "../components/DeleteParticipantsDialog.vue";
+import UpdateParticipantsDialog from "../components/UpdateParticipantsDialog.vue";
 export default {
   name: "Participants",
   data() {
     return {
+      showCreateDialog: false,
+      showDeleteDialog: false,
+      showUpdateDialog: false,
       name: "",
       contactNumber: "",
       participantId: "",
       appointmentCode: ""
     };
+  },
+  components: {
+    CreateParticipantsDialog,
+    DeleteParticipantsDialog,
+    UpdateParticipantsDialog
   },
   computed: {
     ...mapGetters(["getParticipantsList"]),
@@ -24,120 +115,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["createParticipant"]),
-    ...mapActions(["updateParticipant"]),
-    ...mapActions(["addParticipantToAppointment"]),
-    ...mapActions(["deleteParticipantFromAppointment"]),
-    ...mapActions(["deleteParticipant"]),
-    createNewParticipant() {
-      if (this._validateFields()) {
-        this.createParticipant({
-          participantId: this._calculateID(),
-          name: this.name,
-          contactNumber: this.contactNumber
-        });
-      } else {
-        alert("Verify Input Fields");
-      }
+    updateDialog(participantId) {
+      this.$refs.UpdateParticipantsDialog.setId(participantId);
     },
-    modifyParticipant() {
-      if (this._participantExists()) {
-        if (this._validateFields()) {
-          this.updateParticipant({
-            participantId: this.participantId,
-            name: this.name,
-            contactNumber: this.contactNumber
-          });
-        } else {
-          alert("Verify Input Fields");
-        }
-      } else {
-        alert("Invalid Participant Id");
-      }
-    },
-    pushParticipantToAppointment() {
-      if (this._participantExists()) {
-        if (this._appointmentExists()) {
-          this.participants.forEach(participant => {
-            if (participant.participantId === this.participantId) {
-              this.addParticipantToAppointment({
-                appointmentCode: this.appointmentCode,
-                participantId: participant.participantId,
-                name: participant.name,
-                contactNumber: participant.contactNumber
-              });
-            }
-          });
-        } else {
-          alert("Invalid Appointment Code");
-        }
-      } else {
-        alert("Invalid Participant Id");
-      }
-    },
-    removeParticipantFromAppointment() {
-      if (this._participantExists()) {
-        if (this._appointmentExists()) {
-          this.participants.forEach(participant => {
-            if (participant.participantId === this.participantId) {
-              this.deleteParticipantFromAppointment({
-                appointmentCode: this.appointmentCode,
-                participantId: participant.participantId,
-                name: participant.name,
-                contactNumber: participant.contactNumber
-              });
-            }
-          });
-        } else {
-          alert("Invalid Appointment Code");
-        }
-      } else {
-        alert("Invalid Participant Id");
-      }
-    },
-    removeParticipant() {
-      if (this._participantExists()) {
-        this.participants.forEach(participant => {
-          if (participant.participantId === this.participantId) {
-            this.deleteParticipant({
-              appointmentCode: this.appointmentCode,
-              participantId: participant.participantId,
-              name: participant.name,
-              contactNumber: participant.contactNumber
-            });
-          }
-        });
-      } else {
-        alert("Invalid Participant Id");
-      }
-    },
-    _calculateID() {
-      return "PART-" + this.participants.length.toString();
-    },
-    _validateFields() {
-      return this.name !== "" && this.contactNumber !== "";
-    },
-    _participantExists() {
-      let exists = false;
-      if (this.participantId !== "") {
-        this.participants.forEach(participant => {
-          if (participant.participantId === this.participantId) {
-            exists = true;
-          }
-        });
-      }
-      return exists;
-    },
-    _appointmentExists() {
-      let exists = false;
-      if (this.appointmentCode !== "") {
-        this.allAppointments.forEach(appointment => {
-          if (appointment.code === this.appointmentCode) {
-            exists = true;
-          }
-        });
-      }
-      return exists;
+    deleteDialog(participantId) {
+      this.$refs.DeleteParticipantsDialog.setId(participantId);
     }
   }
 };
