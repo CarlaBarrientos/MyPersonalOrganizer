@@ -40,7 +40,7 @@ export default {
     return {
       drawer: false,
       links: [
-        { text: "All Appointments", route: "/", icon: "mdi-alarm" },
+        { text: "This Week", route: "/", icon: "mdi-alarm" },
         { text: "Agendas", route: "/agendas", icon: "mdi-calendar-star" },
         {
           text: "Scheduled",
