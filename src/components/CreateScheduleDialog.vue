@@ -112,7 +112,8 @@ export default {
             date: this.date,
             startHour: this.startHour,
             endHour: this.endHour,
-            agendaId: this.agendaId
+            agendaId: this.agendaId,
+            participants: []
           });
           this.dialog = false;
           this.name = "";
