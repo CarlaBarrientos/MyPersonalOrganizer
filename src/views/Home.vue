@@ -19,7 +19,7 @@
           ref="calendar"
           :now="date"
           :value="date"
-          :events="parseAppointments"
+          :events="parseScheduled"
           color="primary"
           type="week"
         ></v-calendar>
@@ -38,18 +38,20 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getAllAppointmentsList"]),
-    allAppointments() {
-      return this.getAllAppointmentsList;
+    ...mapGetters(["getScheduledList"]),
+    scheduled() {
+      return this.getScheduledList;
     },
-    parseAppointments() {
-      this.allAppointments.forEach(appointment => {
+    parseScheduled() {
+      let parseScheduled = [];
+      this.scheduled.forEach(appointment => {
         let start = appointment.date + " " + appointment.startHour;
         let end = appointment.date + " " + appointment.endHour;
-        appointment.start = start;
-        appointment.end = end;
+        let name = appointment.name;
+        let parsed = { start: start, end: end, name: name };
+        parseScheduled.push(parsed);
       });
-      return this.allAppointments;
+      return parseScheduled;
     }
   },
   methods: {
