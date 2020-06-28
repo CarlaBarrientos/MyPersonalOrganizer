@@ -47,7 +47,11 @@ export default {
           route: "/appointments",
           icon: "mdi-calendar-check"
         },
-        { text: "Recursive", route: "/recursive", icon: "mdi-calendar-month" },
+        {
+          text: "Recursive",
+          route: "/recursive",
+          icon: "mdi-calendar-month"
+        },
         { text: "Postponed", route: "/postponed", icon: "mdi-calendar-remove" },
         {
           text: "Participants",

@@ -1,4 +1,26 @@
 "use strict";
+//Recursive Appointments
+const mutateAddRecursive = (state, newRecursive) => {
+  state.recursiveAppointments.push(newRecursive);
+};
+const mutateModifyRecursive = (state, recursiveToUpdate) => {
+  const indexToUpdate = state.recursiveAppointments.findIndex(
+    recursive => recursive.code === recursiveToUpdate.code
+  );
+  if (indexToUpdate > -1) {
+    state.recursiveAppointments.splice(indexToUpdate, 1, recursiveToUpdate);
+  }
+};
+const mutateDeleteRecursive = (state, code) => {
+  const indexToDelete = state.recursiveAppointments.findIndex(
+    schedule => schedule.code === code
+  );
+  if (indexToDelete > -1) {
+    state.recursiveAppointments = state.recursiveAppointments.filter(
+      recursive => recursive.code !== code
+    );
+  }
+};
 //Schedule Appointments
 const mutateAddSchedule = (state, newSchedule) => {
   state.scheduledAppointments.push(newSchedule);
@@ -100,6 +122,9 @@ const mutateDeleteParticipant = (state, participantToDelete) => {
   });
 };
 export default {
+  mutateAddRecursive,
+  mutateModifyRecursive,
+  mutateDeleteRecursive,
   mutateAddSchedule,
   mutateModifySchedule,
   mutateDeleteSchedule,

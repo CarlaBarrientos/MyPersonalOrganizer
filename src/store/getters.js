@@ -11,9 +11,13 @@ const getAllAppointmentsList = state => {
 const getPpdAppointmentsList = state => {
   return state.postponedAppointments;
 };
+const getRecursiveList = state => {
+  return state.recursiveAppointments;
+};
 export default {
   getScheduledList,
   getAllAppointmentsList,
   getParticipantsList,
-  getPpdAppointmentsList
+  getPpdAppointmentsList,
+  getRecursiveList
 };

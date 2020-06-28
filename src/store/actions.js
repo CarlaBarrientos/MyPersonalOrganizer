@@ -32,6 +32,15 @@ const modifyPpdAppointment = ({ commit }, appointmentToUpdate) => {
 const deletePpdAppointment = ({ commit }, code) => {
   commit("mutateDeletePpdAppointment", code);
 };
+const addRecursive = ({ commit }, newRecursive) => {
+  commit("mutateAddRecursive", newRecursive);
+};
+const modifyRecursive = ({ commit }, recursiveToUpdate) => {
+  commit("mutateModifyRecursive", recursiveToUpdate);
+};
+const deleteRecursive = ({ commit }, code) => {
+  commit("mutateDeleteRecursive", code);
+};
 export default {
   addSchedule,
   modifySchedule,
@@ -43,5 +52,8 @@ export default {
   deleteParticipant,
   addPpdAppointment,
   modifyPpdAppointment,
-  deletePpdAppointment
+  deletePpdAppointment,
+  addRecursive,
+  modifyRecursive,
+  deleteRecursive
 };
