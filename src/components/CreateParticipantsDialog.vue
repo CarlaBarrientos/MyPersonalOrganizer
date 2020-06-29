@@ -87,7 +87,10 @@ export default {
       return this.name !== "" && this.contactNumber !== "";
     },
     _calculateID() {
-      return "PART-" + this.participants.length.toString();
+      const participantId = this.participants[this.participants.length - 1]
+        .participantId;
+      const newNumber = parseInt(participantId.split("-")[1]) + 1;
+      return "PART-" + newNumber;
     }
   }
 };

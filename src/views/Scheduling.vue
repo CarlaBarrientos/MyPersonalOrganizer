@@ -51,7 +51,10 @@
               </div>
               <div class="grey--text">End hour: {{ appointment.endHour }}</div>
               <div class="grey--text">Agenda: {{ appointment.agendaId }}</div>
-              <div class="grey--text">
+              <div
+                v-if="participantsOnAppointment(appointment.code).length > 0"
+                class="grey--text"
+              >
                 Participants:
               </div>
               <div

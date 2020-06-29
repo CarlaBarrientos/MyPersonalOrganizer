@@ -69,7 +69,10 @@
               <div class="grey--text">
                 End hour: {{ selectedEvent.endHour }}
               </div>
-              <div class="grey--text">
+              <div
+                v-if="participantsOnAppointment(selectedEvent.code).length > 0"
+                class="grey--text"
+              >
                 Participants:
               </div>
               <div
