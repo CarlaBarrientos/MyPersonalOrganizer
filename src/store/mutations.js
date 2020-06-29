@@ -21,6 +21,18 @@ const mutateDeleteSchedule = (state, code) => {
     );
   }
 };
+const mutateDeleteAppointmentFromAgenda = (state, appointmentCode) => {
+  const indexAppointment = state.scheduledAppointments.findIndex(
+    appointment => appointment.code === appointmentCode
+  );
+  const agendaId = state.scheduledAppointments[indexAppointment].agendaId;
+  const agendaIndex = state.agendas.findIndex(
+    agenda => agenda.agendaId === agendaId
+  );
+  state.agendas[agendaIndex].appointments = state.agendas[
+    agendaIndex
+  ].appointments.filter(appointment => appointment.code !== appointmentCode);
+};
 // Postponing Appointments
 const mutatePostponeAppointment = (state, newPpdAppointments) => {
   state.postponedAppointments.push(newPpdAppointments);
@@ -143,5 +155,6 @@ export default {
   mutateAddRecursive,
   mutateModifyRecursive,
   mutateDeleteRecursive,
-  mutateAddAppointment
+  mutateAddAppointment,
+  mutateDeleteAppointmentFromAgenda
 };

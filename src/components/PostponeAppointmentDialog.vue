@@ -59,7 +59,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["deleteSched"]),
+    ...mapActions(["deleteSched", "deleteAppointmentFromAgenda"]),
     ...mapActions(["addPpdAppointment"]),
     postponeAppointment() {
       this.addPpdAppointment({
@@ -67,6 +67,7 @@ export default {
         name: this.name,
         description: this.description
       });
+      this.deleteAppointmentFromAgenda(this.code);
       this.deleteSched(this.code);
     },
     getName() {

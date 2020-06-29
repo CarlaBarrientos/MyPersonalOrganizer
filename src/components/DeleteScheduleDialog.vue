@@ -60,19 +60,20 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["deleteSched"]),
+    ...mapActions(["deleteSched", "deleteAppointmentFromAgenda"]),
     ...mapActions(["addPpdAppointment"]),
     deleteSchedule(codeToDelete) {
       if (this._validateDate(this._getAppointmentDate())) {
+        this.deleteAppointmentFromAgenda(codeToDelete);
         this.deleteSched(codeToDelete);
         this.dialog = false;
       } else {
-        //alert("The appointment is now on postponed list");
         this.addPpdAppointment({
           code: codeToDelete,
           name: this.name,
           description: this.description
         });
+        this.deleteAppointmentFromAgenda(codeToDelete);
         this.deleteSched(codeToDelete);
         this.dialog = false;
       }
