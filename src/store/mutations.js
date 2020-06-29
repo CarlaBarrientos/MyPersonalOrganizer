@@ -43,6 +43,12 @@ const mutateDeletePpdAppointment = (state, code) => {
     );
   }
 };
+const mutateAddAppointment = (state, newAppointment) => {
+  const agendaIndex = state.agendas.findIndex(
+    agenda => agenda.agendaId === newAppointment.agendaId
+  );
+  state.agendas[agendaIndex].appointments.push(newAppointment);
+};
 // Participants
 const mutateCreateParticipant = (state, newParticipant) => {
   state.participants.push(newParticipant);
@@ -136,5 +142,6 @@ export default {
   mutateDeleteParticipant,
   mutateAddRecursive,
   mutateModifyRecursive,
-  mutateDeleteRecursive
+  mutateDeleteRecursive,
+  mutateAddAppointment
 };
