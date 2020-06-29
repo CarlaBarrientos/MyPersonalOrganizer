@@ -1,4 +1,7 @@
 "use strict";
+const getAgendaList = state => {
+  return state.agendas;
+};
 const getScheduledList = state => {
   return state.scheduledAppointments;
 };
@@ -15,6 +18,7 @@ const getRecursiveList = state => {
   return state.recursiveAppointments;
 };
 export default {
+  getAgendaList,
   getScheduledList,
   getAllAppointmentsList,
   getParticipantsList,
