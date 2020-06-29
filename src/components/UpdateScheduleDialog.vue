@@ -109,11 +109,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["modifySchedule"]),
+    ...mapActions(["modifySchedule", "updateAppointmentFromAgenda"]),
     updateSchedule() {
       if (this._validateData()) {
         if (this._validateHoursRange()) {
-          this.modifySchedule({
+          const updatedSched = {
             code: this.code,
             name: this.name,
             description: this.description,
@@ -124,13 +124,18 @@ export default {
               agenda => agenda.name === this.agendaName
             ).agendaId,
             participants: this.participants
-          });
+          };
+          this.updateAppointmentFromAgenda(updatedSched);
+          this.modifySchedule(updatedSched);
           this.dialog = false;
           this.name = "";
           this.description = "";
           this.date = "";
           this.startHour = "";
           this.endHour = "";
+          this.agendaName = "";
+          this.agendaEndHour = "";
+          this.agendaStartHour = "";
         } else {
           alert(
             "The start/end hour should be between the hours range of the Agenda."

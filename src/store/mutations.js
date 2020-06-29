@@ -33,6 +33,21 @@ const mutateDeleteAppointmentFromAgenda = (state, appointmentCode) => {
     agendaIndex
   ].appointments.filter(appointment => appointment.code !== appointmentCode);
 };
+const mutateUpdateAppointmentFromAgenda = (state, appointmetToUpdate) => {
+  const agendaIndex = state.agendas.findIndex(
+    agenda => agenda.agendaId === appointmetToUpdate.agendaId
+  );
+  const indexToUpdate = state.agendas[agendaIndex].appointments.findIndex(
+    appointment => appointment.code === appointmetToUpdate.code
+  );
+  if (indexToUpdate > -1) {
+    state.agendas[agendaIndex].appointments.splice(
+      indexToUpdate,
+      1,
+      appointmetToUpdate
+    );
+  }
+};
 // Postponing Appointments
 const mutatePostponeAppointment = (state, newPpdAppointments) => {
   state.postponedAppointments.push(newPpdAppointments);
@@ -156,5 +171,6 @@ export default {
   mutateModifyRecursive,
   mutateDeleteRecursive,
   mutateAddAppointment,
-  mutateDeleteAppointmentFromAgenda
+  mutateDeleteAppointmentFromAgenda,
+  mutateUpdateAppointmentFromAgenda
 };
