@@ -41,6 +41,33 @@ const mutateDeleteSchedule = (state, code) => {
     );
   }
 };
+const mutateDeleteAppointmentFromAgenda = (state, appointmentCode) => {
+  const indexAppointment = state.scheduledAppointments.findIndex(
+    appointment => appointment.code === appointmentCode
+  );
+  const agendaId = state.scheduledAppointments[indexAppointment].agendaId;
+  const agendaIndex = state.agendas.findIndex(
+    agenda => agenda.agendaId === agendaId
+  );
+  state.agendas[agendaIndex].appointments = state.agendas[
+    agendaIndex
+  ].appointments.filter(appointment => appointment.code !== appointmentCode);
+};
+const mutateUpdateAppointmentFromAgenda = (state, appointmetToUpdate) => {
+  const agendaIndex = state.agendas.findIndex(
+    agenda => agenda.agendaId === appointmetToUpdate.agendaId
+  );
+  const indexToUpdate = state.agendas[agendaIndex].appointments.findIndex(
+    appointment => appointment.code === appointmetToUpdate.code
+  );
+  if (indexToUpdate > -1) {
+    state.agendas[agendaIndex].appointments.splice(
+      indexToUpdate,
+      1,
+      appointmetToUpdate
+    );
+  }
+};
 // Postponing Appointments
 const mutatePostponeAppointment = (state, newPpdAppointments) => {
   state.postponedAppointments.push(newPpdAppointments);
@@ -62,6 +89,12 @@ const mutateDeletePpdAppointment = (state, code) => {
       appointment => appointment.code !== code
     );
   }
+};
+const mutateAddAppointment = (state, newAppointment) => {
+  const agendaIndex = state.agendas.findIndex(
+    agenda => agenda.agendaId === newAppointment.agendaId
+  );
+  state.agendas[agendaIndex].appointments.push(newAppointment);
 };
 // Participants
 const mutateCreateParticipant = (state, newParticipant) => {
@@ -159,5 +192,8 @@ export default {
   mutateDeleteParticipant,
   mutateAddRecursive,
   mutateModifyRecursive,
-  mutateDeleteRecursive
+  mutateDeleteRecursive,
+  mutateAddAppointment,
+  mutateDeleteAppointmentFromAgenda,
+  mutateUpdateAppointmentFromAgenda
 };

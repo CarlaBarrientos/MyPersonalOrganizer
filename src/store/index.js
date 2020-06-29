@@ -8,11 +8,28 @@ Vue.use(Vuex);
 const state = {
   agendas: [
     {
-      agendaId: "AGN-1",
+      agendaId: "ANG-1",
       name: "Work",
-      description: "Only Work Stuff",
-      agendaStartHour: "11:00",
-      agendaEndHour: "19:00"
+      description: "My Agenda to manage my workd",
+      startHour: "10:00",
+      endHour: "16:00",
+      appointments: []
+    },
+    {
+      agendaId: "ANG-2",
+      name: "Work2",
+      description: "My Agenda to manage my workd",
+      startHour: "10:00",
+      endHour: "16:00",
+      appointments: []
+    },
+    {
+      agendaId: "ANG-3",
+      name: "Work3",
+      description: "My Agenda to manage my workd",
+      startHour: "10:00",
+      endHour: "16:00",
+      appointments: []
     }
   ],
   scheduledAppointments: [

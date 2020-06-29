@@ -43,7 +43,7 @@
                 <v-select
                   :items="agendas"
                   label="Select an Agenda"
-                  v-model="agendaId"
+                  v-model="agendaName"
                 ></v-select>
               </v-col>
             </v-row>
@@ -76,20 +76,27 @@ export default {
       date: "",
       startHour: "",
       endHour: "",
-      agendaId: "1",
+      agendaName: "",
       participants: [],
-      agendaStartHour: "11:00",
-      agendaEndHour: "17:00",
-      agendas: ["ANG-001", "ANG-002", "ANG-003"]
+      agendaStartHour: "",
+      agendaEndHour: ""
     };
   },
   props: {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getScheduledList"]),
+    ...mapGetters(["getScheduledList", "getAgendas"]),
     scheduled() {
       return this.getScheduledList;
+    },
+    agendas() {
+      const agendasArray = [];
+
+      for (let i = 0; i < this.getAgendas.length; i++) {
+        agendasArray.push(this.getAgendas[i].name);
+      }
+      return agendasArray;
     },
     dialog: {
       get() {
@@ -101,26 +108,33 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["addSchedule"]),
+    ...mapActions(["addSchedule", "addAppointmentToAgenda"]),
     addNewSchedule() {
       if (this._validateData()) {
         if (this._validateHoursRange()) {
-          this.addSchedule({
+          const newAppointment = {
             code: this._selfGenerateCode(),
             name: this.name,
             description: this.description,
             date: this.date,
             startHour: this.startHour,
             endHour: this.endHour,
-            agendaId: this.agendaId,
+            agendaId: this.getAgendas.find(
+              agenda => agenda.name === this.agendaName
+            ).agendaId,
             participants: []
-          });
+          };
+          this.addSchedule(newAppointment);
+          this.addAppointmentToAgenda(newAppointment);
           this.dialog = false;
           this.name = "";
           this.description = "";
           this.date = "";
           this.startHour = "";
           this.endHour = "";
+          this.agendaName = "";
+          this.agendaEndHour = "";
+          this.agendaStartHour = "";
         } else {
           alert("The End Hour should be greater than Start Hour.");
         }
@@ -135,10 +149,16 @@ export default {
         this.date != "" &&
         this.startHour != "" &&
         this.endHour != "" &&
-        this.agendaId != ""
+        this.agendaName != ""
       );
     },
     _validateHoursRange() {
+      this.agendaStartHour = this.getAgendas.find(
+        agenda => agenda.name === this.agendaName
+      ).startHour;
+      this.agendaEndHour = this.getAgendas.find(
+        agenda => agenda.name === this.agendaName
+      ).endHour;
       const startAgenda = parseInt(this.agendaStartHour.split(":")[0]);
       const endAgenda = parseInt(this.agendaEndHour.split(":")[0]);
       const startAppointment = parseInt(this.startHour.split(":")[0]);

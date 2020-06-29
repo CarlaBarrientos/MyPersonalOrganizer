@@ -17,11 +17,15 @@ const getPpdAppointmentsList = state => {
 const getRecursiveList = state => {
   return state.recursiveAppointments;
 };
+const getAgendas = state => {
+  return state.agendas;
+};
 export default {
   getAgendaList,
   getScheduledList,
   getAllAppointmentsList,
   getParticipantsList,
   getPpdAppointmentsList,
-  getRecursiveList
+  getRecursiveList,
+  getAgendas
 };
