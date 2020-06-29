@@ -137,7 +137,7 @@ export default {
     filteredParticipants() {
       let founded = [];
       let filtered = [];
-      this.scheduled.forEach(appointment => {
+      this.allAppointments.forEach(appointment => {
         if (appointment.code === this.code) {
           founded = appointment.participants;
         }

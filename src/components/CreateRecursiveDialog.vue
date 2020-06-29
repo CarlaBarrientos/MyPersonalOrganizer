@@ -178,7 +178,8 @@ export default {
             endHour: this.endHour,
             agendaId: this.agendaId,
             time: this.repeatId,
-            each: this.day
+            each: this.day,
+            participants: []
           });
           if (this.repeatId === "Daily") {
             this.dates = this.obtainDates(
@@ -193,7 +194,8 @@ export default {
                 date: date,
                 startHour: self.startHour,
                 endHour: self.endHour,
-                agendaId: self.agendaId
+                agendaId: self.agendaId,
+                participants: []
               });
             });
           }
@@ -211,7 +213,8 @@ export default {
                   date: correctDate(date),
                   startHour: self.startHour,
                   endHour: self.endHour,
-                  agendaId: self.agendaId
+                  agendaId: self.agendaId,
+                  participants: []
                 });
               }
             });
@@ -230,7 +233,8 @@ export default {
                   date: date,
                   startHour: self.startHour,
                   endHour: self.endHour,
-                  agendaId: self.agendaId
+                  agendaId: self.agendaId,
+                  participants: []
                 });
               }
             });
@@ -261,7 +265,8 @@ export default {
         date: this.begindate,
         startHour: this.startHour,
         endHour: this.endHour,
-        agendaId: this.agendaId
+        agendaId: this.agendaId,
+        participants: []
       });
     },
     obtainDates(startDate, endDate) {
