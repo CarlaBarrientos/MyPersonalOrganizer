@@ -6,7 +6,32 @@ import getters from "./getters.js";
 Vue.use(Vuex);
 
 const state = {
-  agendas: [],
+  agendas: [
+    {
+      agendaId: "ANG-1",
+      name: "Work",
+      description: "My Agenda to manage my workd",
+      startHour: "10:00",
+      endHour: "16:00",
+      appointments: []
+    },
+    {
+      agendaId: "ANG-2",
+      name: "Work2",
+      description: "My Agenda to manage my workd",
+      startHour: "10:00",
+      endHour: "16:00",
+      appointments: []
+    },
+    {
+      agendaId: "ANG-3",
+      name: "Work3",
+      description: "My Agenda to manage my workd",
+      startHour: "10:00",
+      endHour: "16:00",
+      appointments: []
+    }
+  ],
   scheduledAppointments: [
     {
       code: "sched-1",

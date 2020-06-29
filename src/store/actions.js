@@ -8,6 +8,15 @@ const modifySchedule = ({ commit }, scheduleToUpdate) => {
 const deleteSched = ({ commit }, code) => {
   commit("mutateDeleteSchedule", code);
 };
+const addAppointmentToAgenda = ({ commit }, newAppointment) => {
+  commit("mutateAddAppointment", newAppointment);
+};
+const deleteAppointmentFromAgenda = ({ commit }, agendaCode) => {
+  commit("mutateDeleteAppointmentFromAgenda", agendaCode);
+};
+const updateAppointmentFromAgenda = ({ commit }, appointmentToUpdate) => {
+  commit("mutateUpdateAppointmentFromAgenda", appointmentToUpdate);
+};
 const createParticipant = ({ commit }, newParticipant) => {
   commit("mutateCreateParticipant", newParticipant);
 };
@@ -55,5 +64,8 @@ export default {
   deletePpdAppointment,
   addRecursive,
   modifyRecursive,
-  deleteRecursive
+  deleteRecursive,
+  addAppointmentToAgenda,
+  deleteAppointmentFromAgenda,
+  updateAppointmentFromAgenda
 };
