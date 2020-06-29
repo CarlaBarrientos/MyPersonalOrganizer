@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Agenda from "../views/Agenda.vue";
 import Participants from "../views/Participants.vue";
 import Scheduling from "../views/Scheduling.vue";
 import Recursive from "../views/Recursive.vue";
@@ -13,6 +14,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/agendas",
+    name: "Agenda",
+    component: Agenda
   },
   {
     path: "/participants",

@@ -82,7 +82,7 @@ const state = {
       date: "2020-06-24",
       startHour: "14:00",
       endHour: "15:00",
-      agendaId: "ANG-001",
+      agendaId: "AGN-1",
       participants: []
     }
   ],

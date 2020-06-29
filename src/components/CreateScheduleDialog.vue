@@ -136,9 +136,7 @@ export default {
           this.agendaEndHour = "";
           this.agendaStartHour = "";
         } else {
-          alert(
-            "The start/end hour should be between the hours range of the Agenda."
-          );
+          alert("The End Hour should be greater than Start Hour.");
         }
       } else {
         alert("All fields must be filled!");

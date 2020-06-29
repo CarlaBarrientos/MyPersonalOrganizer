@@ -1,4 +1,13 @@
 "use strict";
+const addAgenda = ({ commit }, newAgenda) => {
+  commit("mutateAddAgenda", newAgenda);
+};
+const modifyAgenda = ({ commit }, agendaToUpdate) => {
+  commit("mutateModifyAgenda", agendaToUpdate);
+};
+const deleteAgenda = ({ commit }, code) => {
+  commit("mutateDeleteAgenda", code);
+};
 const addSchedule = ({ commit }, newSchedule) => {
   commit("mutateAddSchedule", newSchedule);
 };
@@ -51,6 +60,9 @@ const deleteRecursive = ({ commit }, code) => {
   commit("mutateDeleteRecursive", code);
 };
 export default {
+  addAgenda,
+  modifyAgenda,
+  deleteAgenda,
   addSchedule,
   modifySchedule,
   deleteSched,

@@ -1,4 +1,24 @@
 "use strict";
+//Agendas commits
+const mutateAddAgenda = (state, newAgenda) => {
+  state.agendas.push(newAgenda);
+};
+const mutateModifyAgenda = (state, agendaToUpdate) => {
+  const indexToUpdate = state.agendas.findIndex(
+    agenda => agenda.code === agendaToUpdate.code
+  );
+  if (indexToUpdate > -1) {
+    state.agendas.splice(indexToUpdate, 1, agendaToUpdate);
+  }
+};
+const mutateDeleteAgenda = (state, code) => {
+  const indexToDelete = state.agendas.findIndex(
+    agenda => agenda.agendaId === code
+  );
+  if (indexToDelete > -1) {
+    state.agendas = state.agendas.filter(agenda => agenda.agendaId !== code);
+  }
+};
 //Schedule Appointments
 const mutateAddSchedule = (state, newSchedule) => {
   state.scheduledAppointments.push(newSchedule);
@@ -156,6 +176,9 @@ const mutateDeleteRecursive = (state, code) => {
   }
 };
 export default {
+  mutateAddAgenda,
+  mutateModifyAgenda,
+  mutateDeleteAgenda,
   mutateAddSchedule,
   mutateModifySchedule,
   mutateDeleteSchedule,

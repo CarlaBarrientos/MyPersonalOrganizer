@@ -1,4 +1,7 @@
 "use strict";
+const getAgendaList = state => {
+  return state.agendas;
+};
 const getScheduledList = state => {
   return state.scheduledAppointments;
 };
@@ -18,6 +21,7 @@ const getAgendas = state => {
   return state.agendas;
 };
 export default {
+  getAgendaList,
   getScheduledList,
   getAllAppointmentsList,
   getParticipantsList,
