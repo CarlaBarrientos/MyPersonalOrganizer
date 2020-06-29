@@ -28,8 +28,7 @@
                     x-large
                     icon
                     @click="
-                      pushParticipantToAppointment(participant.participantId);
-                      showUpdateDialog = true;
+                      pushParticipantToAppointment(participant.participantId)
                     "
                     color="green"
                   >

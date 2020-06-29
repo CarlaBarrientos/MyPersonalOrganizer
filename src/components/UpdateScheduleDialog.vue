@@ -113,7 +113,8 @@ export default {
             date: this.date,
             startHour: this.startHour,
             endHour: this.endHour,
-            agendaId: this.agendaId
+            agendaId: this.agendaId,
+            participants: this.participants
           });
           this.dialog = false;
           this.name = "";
@@ -164,6 +165,7 @@ export default {
         this.startHour = appointment.startHour;
         this.endHour = appointment.endHour;
         this.agendaId = appointment.agendaId;
+        this.participants = appointment.participants;
       }
     },
     getName() {
