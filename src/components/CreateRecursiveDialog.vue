@@ -21,13 +21,26 @@
                 <v-menu :close-on-content-click="true" width="30">
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      :value="date"
-                      label="Date"
+                      :value="begindate"
+                      label="Begin Date"
                       prepend-icon="mdi-calendar-range"
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="date"></v-date-picker>
+                  <v-date-picker v-model="begindate"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="6">
+                <v-menu :close-on-content-click="true" width="30">
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      :value="enddate"
+                      label="End Date"
+                      prepend-icon="mdi-calendar-range"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="enddate"></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="3">
@@ -53,6 +66,19 @@
                   v-model="repeatId"
                 ></v-select>
               </v-col>
+              <v-col cols="12" v-if="repeatId === 'Weekly'">
+                <v-select
+                  :items="days"
+                  label="Select the Day"
+                  v-model="day"
+                ></v-select>
+              </v-col>
+              <v-col cols="12" v-if="repeatId === 'Monthly'">
+                <v-text-field
+                  v-model="day"
+                  label="Select the Day"
+                ></v-text-field>
+              </v-col>
             </v-row>
           </v-container>
         </v-card-text>
@@ -75,21 +101,33 @@ import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "CreateScheduleDialog",
+  name: "CreateRecursiveDialog",
   data() {
     return {
       name: "",
       description: "",
-      date: "",
+      begindate: "",
+      enddate: "",
       startHour: "",
       endHour: "",
       agendaId: "1",
-      repeatId: "1",
+      repeatId: "Daily",
       participants: [],
       agendaStartHour: "11:00",
       agendaEndHour: "17:00",
       agendas: ["ANG-001", "ANG-002", "ANG-003"],
-      repeat: ["Daily", "Weekly", "Monthly"]
+      repeat: ["Daily", "Weekly", "Monthly"],
+      day: "",
+      days: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      dates: []
     };
   },
   props: {
@@ -97,6 +135,10 @@ export default {
   },
   computed: {
     ...mapGetters(["getRecursiveList"]),
+    ...mapGetters(["getScheduledList"]),
+    scheduled() {
+      return this.getScheduledList;
+    },
     recursive() {
       return this.getRecursiveList;
     },
@@ -111,25 +153,97 @@ export default {
   },
   methods: {
     ...mapActions(["addRecursive"]),
+    ...mapActions(["addSchedule"]),
     addNewRecursive() {
+      let self = this;
+      let correctDate = function(date) {
+        let d = new Date(date),
+          month = "" + (d.getMonth() + 1),
+          day = "" + d.getDate(),
+          year = d.getFullYear();
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
+
+        return [year, month, day].join("-").toString();
+      };
       if (this._validateData()) {
         if (this._validateHoursRange()) {
           this.addRecursive({
             code: this._selfGenerateCode(),
             name: this.name,
             description: this.description,
-            date: this.date,
+            begindate: this.begindate,
+            enddate: this.enddate,
             startHour: this.startHour,
             endHour: this.endHour,
             agendaId: this.agendaId,
-            time: this.repeatId
+            time: this.repeatId,
+            each: this.day
           });
+          if (this.repeatId === "Daily") {
+            this.dates = this.obtainDates(
+              new Date(this.begindate),
+              new Date(this.enddate)
+            );
+            this.dates.forEach(function(date) {
+              self.addSchedule({
+                code: self._selfGenerateCodeSchedule(),
+                name: self.name,
+                description: self.description,
+                date: date,
+                startHour: self.startHour,
+                endHour: self.endHour,
+                agendaId: self.agendaId
+              });
+            });
+          }
+          if (this.repeatId === "Weekly") {
+            this.dates = this.obtainDatesWeek(
+              new Date(this.begindate),
+              new Date(this.enddate)
+            );
+            this.dates.forEach(function(date) {
+              if (self.day.substring(0, 3) === date.substring(0, 3)) {
+                self.addSchedule({
+                  code: self._selfGenerateCodeSchedule(),
+                  name: self.name,
+                  description: self.description,
+                  date: correctDate(date),
+                  startHour: self.startHour,
+                  endHour: self.endHour,
+                  agendaId: self.agendaId
+                });
+              }
+            });
+          }
+          if (this.repeatId === "Monthly") {
+            this.dates = this.obtainDates(
+              new Date(this.begindate),
+              new Date(this.enddate)
+            );
+            this.dates.forEach(function(date) {
+              if (self.day === date.slice(-2)) {
+                self.addSchedule({
+                  code: self._selfGenerateCodeSchedule(),
+                  name: self.name,
+                  description: self.description,
+                  date: date,
+                  startHour: self.startHour,
+                  endHour: self.endHour,
+                  agendaId: self.agendaId
+                });
+              }
+            });
+          }
           this.dialog = false;
           this.name = "";
           this.description = "";
-          this.date = "";
+          this.begindate = "";
+          this.enddate = "";
           this.startHour = "";
           this.endHour = "";
+          this.repeatId = "Daily";
+          this.day = "";
         } else {
           alert(
             "The start/end hour should be between the hours range of the Agenda."
@@ -139,11 +253,65 @@ export default {
         alert("All fields must be filled!");
       }
     },
+    addNewSchedule() {
+      this.addSchedule({
+        code: this._selfGenerateCodeSchedule(),
+        name: this.name,
+        description: this.description,
+        date: this.begindate,
+        startHour: this.startHour,
+        endHour: this.endHour,
+        agendaId: this.agendaId
+      });
+    },
+    obtainDates(startDate, endDate) {
+      let dates = [],
+        currentDate = startDate,
+        addDays = function(days) {
+          let date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+        },
+        formatDate = function(date) {
+          let d = new Date(date),
+            month = "" + (d.getMonth() + 1),
+            day = "" + d.getDate(),
+            year = d.getFullYear();
+          if (month.length < 2) month = "0" + month;
+          if (day.length < 2) day = "0" + day;
+
+          return [year, month, day].join("-").toString();
+        };
+      currentDate = addDays.call(currentDate, 1);
+      endDate = addDays.call(endDate, 1);
+      while (currentDate <= endDate) {
+        dates.push(formatDate(currentDate));
+        currentDate = addDays.call(currentDate, 1);
+      }
+      return dates;
+    },
+    obtainDatesWeek(startDate, endDate) {
+      let dates = [],
+        currentDate = startDate,
+        addDays = function(days) {
+          let date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          return date;
+        };
+      currentDate = addDays.call(currentDate, 1);
+      endDate = addDays.call(endDate, 1);
+      while (currentDate <= endDate) {
+        dates.push(currentDate.toString());
+        currentDate = addDays.call(currentDate, 1);
+      }
+      return dates;
+    },
     _validateData() {
       return (
         this.name != "" &&
         this.description != "" &&
-        this.date != "" &&
+        this.begindate != "" &&
+        this.enddate != "" &&
         this.startHour != "" &&
         this.endHour != "" &&
         this.agendaId != ""
@@ -165,6 +333,11 @@ export default {
       const { code } = this.recursive[Object.keys(this.recursive).length - 1];
       const newNumber = parseInt(code.split("-")[1]) + 1;
       return "recursive-" + newNumber;
+    },
+    _selfGenerateCodeSchedule() {
+      const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
+      const newNumber = parseInt(code.split("-")[1]) + 1;
+      return "sched-" + newNumber;
     }
   }
 };

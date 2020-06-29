@@ -45,12 +45,20 @@
               <div class="grey--text">
                 Description: {{ appointment.description }}
               </div>
-              <div class="grey--text">Date: {{ appointment.date }}</div>
+              <div class="grey--text">
+                Begin-Date: {{ appointment.begindate }}
+              </div>
+              <div class="grey--text">End-Date: {{ appointment.enddate }}</div>
               <div class="grey--text">
                 Start hour: {{ appointment.startHour }}
               </div>
               <div class="grey--text">End hour: {{ appointment.endHour }}</div>
               <div class="grey--text">Agenda: {{ appointment.agendaId }}</div>
+              <div class="grey--text">Repeat: {{ appointment.time }}</div>
+              <div class="grey--text" v-if="appointment.time != 'Daily'">
+                Each: {{ appointment.each }}
+                {{ appointment.time === "Monthly" ? "from every Month" : "" }}
+              </div>
               <div class="grey--text">
                 Participants:
               </div>
@@ -222,10 +230,12 @@ export default {
       return this.getRecursiveList;
     },
     filteredAppointments() {
-      const filteredList = this.recursive.filter(
-        appointment => appointment.date === this.date
-      );
-      const orderedList = filteredList.sort(function(
+      const filteredList = this.recursive;
+      /*.filter(
+        appointment => appointment.begindate === this.date
+      );*/
+      const orderedList = filteredList;
+      /*.sort(function(
         appointment1,
         appointment2
       ) {
@@ -234,7 +244,7 @@ export default {
         if (hour1 < hour2) return -1;
         if (hour1 > hour2) return 1;
         return 0;
-      });
+      });*/
       return orderedList;
     }
   },

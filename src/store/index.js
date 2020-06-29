@@ -78,7 +78,40 @@ const state = {
       description: "I need to go to my university"
     }
   ],
-  recursiveAppointments: [],
+  recursiveAppointments: [
+    {
+      code: "recursive-1",
+      name: "F",
+      description: "FFF",
+      begindate: "2020-06-28",
+      enddate: "2020-06-30",
+      startHour: "14:00",
+      endHour: "15:00",
+      agendaId: "ANG-001",
+      participants: [],
+      time: "Daily",
+      each: ""
+    },
+    {
+      code: "recursive-2",
+      name: "S",
+      description: "SSS",
+      begindate: "2020-06-28",
+      enddate: "2020-06-30",
+      startHour: "15:00",
+      endHour: "16:00",
+      agendaId: "ANG-001",
+      participants: [
+        {
+          participantId: "PART-2",
+          name: "Test",
+          contactNumber: "70777777"
+        }
+      ],
+      time: "Weekly",
+      each: "Monday"
+    }
+  ],
   participants: [
     {
       participantId: "PART-0",
