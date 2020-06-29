@@ -59,7 +59,10 @@
                 Each: {{ appointment.each }}
                 {{ appointment.time === "Monthly" ? "from every Month" : "" }}
               </div>
-              <div class="grey--text">
+              <div
+                v-if="participantsOnAppointment(appointment.code).length > 0"
+                class="grey--text"
+              >
                 Participants:
               </div>
               <div
@@ -231,20 +234,7 @@ export default {
     },
     filteredAppointments() {
       const filteredList = this.recursive;
-      /*.filter(
-        appointment => appointment.begindate === this.date
-      );*/
       const orderedList = filteredList;
-      /*.sort(function(
-        appointment1,
-        appointment2
-      ) {
-        const hour1 = parseFloat(appointment1.startHour.replace(":", "."));
-        const hour2 = parseFloat(appointment2.startHour.replace(":", "."));
-        if (hour1 < hour2) return -1;
-        if (hour1 > hour2) return 1;
-        return 0;
-      });*/
       return orderedList;
     }
   },
