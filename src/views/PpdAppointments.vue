@@ -17,34 +17,60 @@
             </v-card-text>
             <v-card-actions>
               <v-layout row wrap justify-space-around class="pb-3">
-                <v-btn
-                  @click.stop="
-                    enableDialog(appointment.code);
-                    showEnableDialog = true;
-                  "
-                >
-                  <v-icon>mdi-checkbox-marked-circle</v-icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="blue"
+                      @click.stop="
+                        enableDialog(appointment.code);
+                        showEnableDialog = true;
+                      "
+                      v-on="on"
+                    >
+                      <v-icon>mdi-checkbox-marked-circle</v-icon>
+                    </v-btn>
+                  </template>
                   <span>Enable</span>
-                </v-btn>
-                <v-btn
-                  @click.stop="
-                    updateDialog(appointment.code);
-                    showUpdateDialog = true;
-                  "
-                >
-                  <v-icon>mdi-pencil-outline</v-icon>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="blue-grey"
+                      @click.stop="
+                        updateDialog(appointment.code);
+                        showUpdateDialog = true;
+                      "
+                      v-on="on"
+                    >
+                      <v-icon>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                  </template>
                   <span>Update</span>
-                </v-btn>
-                <v-btn
-                  @click.stop="
-                    deleteDialog(appointment.code);
-                    showDeleteDialog = true;
-                  "
-                  icon
-                  color="red"
-                >
-                  <v-icon>mdi-trash-can-outline</v-icon>
-                </v-btn>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      fab
+                      depressed
+                      dark
+                      color="red"
+                      @click.stop="
+                        deleteDialog(appointment.code);
+                        showDeleteDialog = true;
+                      "
+                      v-on="on"
+                    >
+                      <v-icon>mdi-trash-can-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Delete</span>
+                </v-tooltip>
               </v-layout>
             </v-card-actions>
           </v-card>
