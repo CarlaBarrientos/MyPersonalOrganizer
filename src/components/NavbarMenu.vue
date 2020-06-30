@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div id="nav-bar-menu">
     <v-app-bar color="blue" app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        id="nav-bar-icon"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-toolbar-title class="text-capitalize white--text"
         >My Personal Organizer</v-toolbar-title

@@ -46,7 +46,10 @@ export default {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getScheduledList"]),
+    ...mapGetters(["getPpdAppointmentsList", "getScheduledList"]),
+    postponed() {
+      return this.getPpdAppointmentsList;
+    },
     scheduled() {
       return this.getScheduledList;
     },
@@ -69,7 +72,7 @@ export default {
         this.dialog = false;
       } else {
         this.addPpdAppointment({
-          code: codeToDelete,
+          code: this._selfGenerateCode(),
           name: this.name,
           description: this.description
         });
@@ -120,6 +123,15 @@ export default {
         if (appointment !== undefined) {
           return appointment.date;
         }
+      }
+    },
+    _selfGenerateCode() {
+      if (this.postponed.length === 0) {
+        return "schedPostponed-" + 1;
+      } else {
+        const { code } = this.postponed[Object.keys(this.postponed).length - 1];
+        const newNumber = parseInt(code.split("-")[1]) + 1;
+        return "schedPostponed-" + newNumber;
       }
     }
   }
