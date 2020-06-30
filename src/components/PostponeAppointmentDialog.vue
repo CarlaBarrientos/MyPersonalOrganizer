@@ -94,9 +94,13 @@ export default {
       }
     },
     _selfGenerateCode() {
-      const { code } = this.postponed[Object.keys(this.postponed).length - 1];
-      const newNumber = parseInt(code.split("-")[1]) + 1;
-      return "schedPostponed-" + newNumber;
+      if (this.postponed.length === 0) {
+        return "schedPostponed-" + 1;
+      } else {
+        const { code } = this.postponed[Object.keys(this.postponed).length - 1];
+        const newNumber = parseInt(code.split("-")[1]) + 1;
+        return "schedPostponed-" + newNumber;
+      }
     }
   }
 };

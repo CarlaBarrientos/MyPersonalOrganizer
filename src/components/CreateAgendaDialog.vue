@@ -9,22 +9,32 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field v-model="name" label="Name"></v-text-field>
+                <v-text-field
+                  id="agenda-name"
+                  v-model="name"
+                  label="Name"
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                  id="agenda-desc"
                   v-model="description"
                   label="Description"
                 ></v-text-field>
               </v-col>
               <v-col cols="3">
                 <v-text-field
+                  id="agenda-start-hour"
                   v-model="startHour"
                   label="Start Hour"
                 ></v-text-field>
               </v-col>
               <v-col cols="3">
-                <v-text-field v-model="endHour" label="End Hour"></v-text-field>
+                <v-text-field
+                  id="agenda-end-hour"
+                  v-model="endHour"
+                  label="End Hour"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -34,7 +44,13 @@
           <v-btn color="blue darken-1" text @click.stop="dialog = false"
             >Cancel</v-btn
           >
-          <v-btn color="blue darken-1" text @click="addNewAgenda()">Save</v-btn>
+          <v-btn
+            id="save-agenda"
+            color="blue darken-1"
+            text
+            @click="addNewAgenda()"
+            >Save</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -112,9 +128,13 @@ export default {
       return startAgenda < endAgenda;
     },
     _selfGenerateCode() {
-      const { agendaId } = this.agendas[Object.keys(this.agendas).length - 1];
-      const newNumber = parseInt(agendaId.split("-")[1]) + 1;
-      return "AGN-" + newNumber;
+      if (this.agendas.length === 0) {
+        return "AGN-" + 1;
+      } else {
+        const { agendaId } = this.agendas[Object.keys(this.agendas).length - 1];
+        const newNumber = parseInt(agendaId.split("-")[1]) + 1;
+        return "AGN-" + newNumber;
+      }
     }
   }
 };

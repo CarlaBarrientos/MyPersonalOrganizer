@@ -6,16 +6,24 @@ module.exports = {
     browser
       .init()
       .waitForElementVisible("#app")
-      .assert.elementPresent(".hello")
-      .assert.containsText("h1", "Welcome to Your Vue.js App")
-      .assert.elementCount("img", 1)
-      .end();
-  },
-
-  "example e2e test using a custom command": browser => {
-    browser
-      .openHomepage()
-      .assert.elementPresent(".hello")
+      .assert.elementPresent("#nav-bar-menu")
+      .click("#nav-bar-icon")
+      .pause(2000)
+      .click(".link.Agendas")
+      .pause(2000)
+      .click("#btn-add-agenda")
+      .pause(2000)
+      .setValue("input[id=agenda-name]", "Alejandro Gueno")
+      .pause(1000)
+      .setValue("input[id=agenda-desc]", "Un poco rata")
+      .pause(1000)
+      .setValue("input[id=agenda-start-hour]", "12:00")
+      .pause(1000)
+      .setValue("input[id=agenda-end-hour]", "20:00")
+      .pause(1000)
+      .click("#save-agenda")
+      .pause(1000)
+      .assert.containsText(".subheading", "Alejandro Gueno")
       .end();
   }
 };

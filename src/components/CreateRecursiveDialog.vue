@@ -335,14 +335,22 @@ export default {
       );
     },
     _selfGenerateCode() {
-      const { code } = this.recursive[Object.keys(this.recursive).length - 1];
-      const newNumber = parseInt(code.split("-")[1]) + 1;
-      return "recursive-" + newNumber;
+      if (this.recursive.length === 0) {
+        return "recursive-" + 1;
+      } else {
+        const { code } = this.recursive[Object.keys(this.recursive).length - 1];
+        const newNumber = parseInt(code.split("-")[1]) + 1;
+        return "recursive-" + newNumber;
+      }
     },
     _selfGenerateCodeSchedule() {
-      const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
-      const newNumber = parseInt(code.split("-")[1]) + 1;
-      return "sched-" + newNumber;
+      if (this.scheduled.length === 0) {
+        return "sched-" + 1;
+      } else {
+        const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
+        const newNumber = parseInt(code.split("-")[1]) + 1;
+        return "sched-" + newNumber;
+      }
     }
   }
 };

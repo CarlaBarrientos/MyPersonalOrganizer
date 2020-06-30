@@ -7,6 +7,7 @@
       <v-layout row wrap>
         <v-flex md3 class="pl-5 pt-4">
           <v-btn
+            id="btn-add-agenda"
             long
             outlined
             class="text-capitalize"

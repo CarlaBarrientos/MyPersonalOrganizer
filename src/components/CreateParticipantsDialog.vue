@@ -87,10 +87,14 @@ export default {
       return this.name !== "" && this.contactNumber !== "";
     },
     _calculateID() {
-      const participantId = this.participants[this.participants.length - 1]
-        .participantId;
-      const newNumber = parseInt(participantId.split("-")[1]) + 1;
-      return "PART-" + newNumber;
+      if (this.participants.length === 0) {
+        return "PART-" + 1;
+      } else {
+        const participantId = this.participants[this.participants.length - 1]
+          .participantId;
+        const newNumber = parseInt(participantId.split("-")[1]) + 1;
+        return "PART-" + newNumber;
+      }
     }
   }
 };
