@@ -1,5 +1,5 @@
 "use strict";
-const getAgendaList = state => {
+const getAgendas = state => {
   return state.agendas;
 };
 const getScheduledList = state => {
@@ -17,15 +17,11 @@ const getPpdAppointmentsList = state => {
 const getRecursiveList = state => {
   return state.recursiveAppointments;
 };
-const getAgendas = state => {
-  return state.agendas;
-};
 export default {
-  getAgendaList,
+  getAgendas,
   getScheduledList,
   getAllAppointmentsList,
   getParticipantsList,
   getPpdAppointmentsList,
-  getRecursiveList,
-  getAgendas
+  getRecursiveList
 };
