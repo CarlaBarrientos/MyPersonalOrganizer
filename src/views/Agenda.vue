@@ -26,12 +26,21 @@
               <div class="subheading">{{ agenda.name }}</div>
             </v-card-title>
             <v-card-text>
+              <div class="grey--text">Agenda: {{ agenda.agendaId }}</div>
               <div class="grey--text">
                 Description: {{ agenda.description }}
               </div>
               <div class="grey--text">Start hour: {{ agenda.startHour }}</div>
               <div class="grey--text">End hour: {{ agenda.endHour }}</div>
-              <div class="grey--text">Agenda: {{ agenda.agendaId }}</div>
+              <div class="grey--text">Appointments:</div>
+              <div
+                v-for="appointment in agenda.appointments"
+                :key="appointment.code"
+              >
+                <v-chip small outlined color="grey" text-color="grey">
+                  {{ appointment.name }}
+                </v-chip>
+              </div>
             </v-card-text>
             <v-card-actions>
               <v-layout row wrap justify-space-around class="pb-3">
@@ -96,11 +105,7 @@ export default {
     return {
       showCreateDialog: false,
       showDeleteDialog: false,
-      showUpdateDialog: false,
-      showPostponeDialog: false,
-      showAddParticipantDialog: false,
-      showDeleteParticipantDialog: false,
-      date: this.currentDate()
+      showUpdateDialog: false
     };
   },
 
@@ -111,22 +116,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getAgendaList"]),
+    ...mapGetters(["getAgendas"]),
     agendas() {
-      return this.getAgendaList;
+      return this.getAgendas;
     }
   },
 
   methods: {
-    participantsOnAppointment(appointmentCode) {
-      let foundParticipants = [];
-      this.scheduled.forEach(appointment => {
-        if (appointment.code === appointmentCode) {
-          foundParticipants = appointment.participants;
-        }
-      });
-      return foundParticipants;
-    },
     addDialog(code) {
       this.$refs.AddParticipantDialog._setCode(code);
     },
@@ -135,16 +131,6 @@ export default {
     },
     deleteDialog(code) {
       this.$refs.DeleteAgendaDialog._setCode(code);
-    },
-    currentDate() {
-      let today = new Date();
-      const dd = String(today.getDate()).padStart(2, "0");
-      const mm = String(today.getMonth() + 1).padStart(2, "0");
-      const yyyy = today.getFullYear();
-
-      const currentDate = `${yyyy}-${mm}-${dd}`;
-
-      return currentDate;
     }
   }
 };

@@ -52,16 +52,17 @@ export default {
       name: "",
       description: "",
       startHour: "",
-      endHour: ""
+      endHour: "",
+      appointments: []
     };
   },
   props: {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getAgendaList"]),
+    ...mapGetters(["getAgendas"]),
     agendas() {
-      return this.getAgendaList;
+      return this.getAgendas;
     },
     dialog: {
       get() {
@@ -81,8 +82,9 @@ export default {
             agendaId: this._selfGenerateCode(),
             name: this.name,
             description: this.description,
-            agendaStartHour: this.startHour,
-            agendaEndHour: this.endHour
+            startHour: this.startHour,
+            endHour: this.endHour,
+            appointments: this.appointments
           });
           this.dialog = false;
           this.name = "";
