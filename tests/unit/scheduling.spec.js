@@ -48,7 +48,7 @@ describe("Scheduling appointmets/meetings module", () => {
     wrapper.vm.$data.date = "2020-06-21";
     wrapper.vm.$data.startHour = "10:00";
     wrapper.vm.$data.endHour = "11:00";
-    wrapper.vm.$data.agendaId = "1";
+    wrapper.vm.$data.agendaName = "Work";
 
     const validData = wrapper.vm._validateData();
     assert.isTrue(validData);
@@ -59,15 +59,9 @@ describe("Scheduling appointmets/meetings module", () => {
       localVue
     });
 
-    wrapper.vm.$data.name = "presentation";
-    wrapper.vm.$data.description = "final project presentation";
-    wrapper.vm.$data.date = "2020-06-21";
-    wrapper.vm.$data.startHour = "10:00";
+    wrapper.vm.$data.startHour = "11:00";
     wrapper.vm.$data.endHour = "12:00";
-    wrapper.vm.$data.agendaId = "1";
-
-    wrapper.vm.$data.agendaStartHour = "10:00";
-    wrapper.vm.$data.agendaEndHour = "13:00";
+    wrapper.vm.$data.agendaName = "Work";
 
     const validRange = wrapper.vm._validateHoursRange();
     assert.isTrue(validRange);
@@ -81,11 +75,9 @@ describe("Scheduling appointmets/meetings module", () => {
     wrapper.vm.$data.name = "presentation";
     wrapper.vm.$data.description = "final project presentation";
     wrapper.vm.$data.date = "2020-06-21";
-    wrapper.vm.$data.startHour = "10:00";
+    wrapper.vm.$data.startHour = "11:00";
     wrapper.vm.$data.endHour = "12:00";
-    wrapper.vm.$data.agendaId = "1";
-    wrapper.vm.$data.agendaStartHour = "10:00";
-    wrapper.vm.$data.agendaEndHour = "13:00";
+    wrapper.vm.$data.agendaName = "Work";
 
     const expectedLength = wrapper.vm.$store.state.scheduledAppointments.length;
     wrapper.vm.addNewSchedule();
@@ -102,7 +94,7 @@ describe("Scheduling appointmets/meetings module", () => {
 
     let expectedName = "Dentist";
     let expectedDate = "2020-06-12";
-    let expectedAgendaId = "1";
+    let expectedAgendaId = "ANG-1";
 
     const actualScheduled = wrapper.vm.$store.state.scheduledAppointments.find(
       schedule => schedule.code === "sched-1"
@@ -118,15 +110,13 @@ describe("Scheduling appointmets/meetings module", () => {
     wrapper.vm.$data.date = "2020-06-22";
     wrapper.vm.$data.startHour = "10:00";
     wrapper.vm.$data.endHour = "11:00";
-    wrapper.vm.$data.agendaId = "3";
-    wrapper.vm.$data.agendaStartHour = "10:00";
-    wrapper.vm.$data.agendaEndHour = "13:00";
+    wrapper.vm.$data.agendaName = "Work2";
 
     wrapper.vm.updateSchedule();
 
     expectedName = "presentation";
     expectedDate = "2020-06-22";
-    expectedAgendaId = "3";
+    expectedAgendaId = "ANG-2";
 
     const updatedScheduled = wrapper.vm.$store.state.scheduledAppointments.find(
       schedule => schedule.code === "sched-1"
