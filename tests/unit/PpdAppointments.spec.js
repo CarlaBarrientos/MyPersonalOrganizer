@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { mount, createLocalVue } from "@vue/test-utils"; //shallowMount, mount
+import { mount, createLocalVue } from "@vue/test-utils";
 import PostponeDialog from "@/components/PostponeAppointmentDialog.vue";
 import EnablePpdAppointmentDialog from "@/components/EnablePpdAppointmentDialog.vue";
 import DeletePpdAppointmentDialog from "@/components/DeletePpdAppointmentDialog.vue";
@@ -39,23 +39,23 @@ describe("Postponing appointmets module", () => {
 
     const ppdAppointment = {
       code: "sched-1",
-      name: "Dentist",
-      description: "I need to go to dentist"
+      name: "Testing",
+      description: "I am testing"
     };
+    const expectedPpdCode = "schedPostponed-4";
 
     wrapper.vm.$data.code = ppdAppointment.code;
     wrapper.vm.$data.name = ppdAppointment.name;
     wrapper.vm.$data.description = ppdAppointment.description;
     wrapper.vm.postponeAppointment();
-
     const [
       appointmentToFound
     ] = wrapper.vm.$store.state.postponedAppointments.filter(
-      app => app.code === ppdAppointment.code
+      app => app.code === expectedPpdCode
     );
-    //console.log("Probando: " + appointmentToFound.code);
+    //console.log("Probando 1: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
 
-    assert.equal(ppdAppointment.code, appointmentToFound.code);
+    assert.equal(expectedPpdCode, appointmentToFound.code);
     assert.equal(ppdAppointment.name, appointmentToFound.name);
     assert.equal(ppdAppointment.description, appointmentToFound.description);
   });
@@ -67,7 +67,7 @@ describe("Postponing appointmets module", () => {
     });
 
     const ppdAppointment = {
-      code: "sched-5",
+      code: "schedPostponed-1",
       name: "Updating",
       description: "Checking if it was updated"
     };
@@ -82,7 +82,7 @@ describe("Postponing appointmets module", () => {
     ] = wrapper.vm.$store.state.postponedAppointments.filter(
       app => app.code === ppdAppointment.code
     );
-    //console.log("Probando 2: " + appointmentToFound.name);
+    //console.log("Probando 2: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
 
     assert.equal(ppdAppointment.code, appointmentToFound.code);
     assert.equal(ppdAppointment.name, appointmentToFound.name);
@@ -95,7 +95,7 @@ describe("Postponing appointmets module", () => {
       localVue
     });
 
-    const codeToDelete = "sched-6";
+    const codeToDelete = "schedPostponed-2";
     wrapper.vm.deletePostponed(codeToDelete);
 
     const [
@@ -104,6 +104,7 @@ describe("Postponing appointmets module", () => {
       app => app.code === codeToDelete
     );
 
+    //console.log("Probando 3: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
     assert.isUndefined(appointmentToFound);
   });
 
@@ -118,13 +119,13 @@ describe("Postponing appointmets module", () => {
     });
 
     const appointmentToEnable = {
-      code: "sched-6",
+      code: "schedPostponed-3",
       name: "University",
       description: "I need to go to my university",
       date: "2020-06-24",
       startHour: "14:00",
       endHour: "14:30",
-      agendaId: "ANG-001"
+      agendaName: "Work"
     };
     wrapper.vm.$data.code = appointmentToEnable.code;
     wrapper.vm.$data.name = appointmentToEnable.name;
@@ -132,9 +133,10 @@ describe("Postponing appointmets module", () => {
     wrapper.vm.$data.date = appointmentToEnable.date;
     wrapper.vm.$data.startHour = appointmentToEnable.startHour;
     wrapper.vm.$data.endHour = appointmentToEnable.endHour;
-    wrapper.vm.$data.agendaId = appointmentToEnable.agendaId;
+    wrapper.vm.$data.agendaName = appointmentToEnable.agendaName;
     const boolExpected = wrapper.vm._validateData();
 
+    //console.log("Probando 4: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
     assert.isTrue(boolExpected);
   });
 
@@ -145,32 +147,36 @@ describe("Postponing appointmets module", () => {
     });
 
     const appointmentToEnable = {
-      code: "sched-5",
-      name: "Dentist",
-      description: "I need to go to dentist",
+      code: "schedPostponed-4",
+      name: "Testing",
+      description: "I am testing",
       date: "2020-06-24",
-      startHour: "12:00",
-      endHour: "13:00",
-      agendaId: "ANG-001"
+      startHour: "15:00",
+      endHour: "16:00",
+      agendaName: "Work3"
     };
+    const expectedAgendaId = "ANG-3";
+    const expectedschedId = "sched-4";
+    const expectedCode = wrapper.vm._selfGenerateCode();
+
     wrapper.vm.$data.code = appointmentToEnable.code;
     wrapper.vm.$data.name = appointmentToEnable.name;
     wrapper.vm.$data.description = appointmentToEnable.description;
     wrapper.vm.$data.date = appointmentToEnable.date;
     wrapper.vm.$data.startHour = appointmentToEnable.startHour;
     wrapper.vm.$data.endHour = appointmentToEnable.endHour;
-    wrapper.vm.$data.agendaId = appointmentToEnable.agendaId;
+    wrapper.vm.$data.agendaName = appointmentToEnable.agendaName;
     wrapper.vm.addNewSchedule();
 
     const [
       appointmentToFound
     ] = wrapper.vm.$store.state.scheduledAppointments.filter(
-      app => app.code === appointmentToEnable.code
+      app => app.code === expectedCode
     );
-    //console.log("OBJ: " + JSON.stringify([wrapper.vm.$store.state.scheduledAppointments]));
-    //console.log("Probando AQUI: " + appointmentToFound.code);
+    //console.log("Probando 5: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
+    //console.log("Probando 5.1: " + JSON.stringify(wrapper.vm.$store.state.scheduledAppointments));
 
-    assert.equal(appointmentToEnable.code, appointmentToFound.code);
+    assert.equal(expectedschedId, appointmentToFound.code);
     assert.equal(appointmentToEnable.name, appointmentToFound.name);
     assert.equal(
       appointmentToEnable.description,
@@ -179,6 +185,6 @@ describe("Postponing appointmets module", () => {
     assert.equal(appointmentToEnable.date, appointmentToFound.date);
     assert.equal(appointmentToEnable.startHour, appointmentToFound.startHour);
     assert.equal(appointmentToEnable.endHour, appointmentToFound.endHour);
-    assert.equal(appointmentToEnable.agendaId, appointmentToFound.agendaId);
+    assert.equal(expectedAgendaId, appointmentToFound.agendaId);
   });
 });

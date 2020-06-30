@@ -45,6 +45,7 @@ const mutateDeleteAppointmentFromAgenda = (state, appointmentCode) => {
   const indexAppointment = state.scheduledAppointments.findIndex(
     appointment => appointment.code === appointmentCode
   );
+
   const agendaId = state.scheduledAppointments[indexAppointment].agendaId;
   const agendaIndex = state.agendas.findIndex(
     agenda => agenda.agendaId === agendaId

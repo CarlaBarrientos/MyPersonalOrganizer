@@ -29,10 +29,8 @@
               <div class="grey--text">
                 Description: {{ agenda.description }}
               </div>
-              <div class="grey--text">
-                Start hour: {{ agenda.agendaStartHour }}
-              </div>
-              <div class="grey--text">End hour: {{ agenda.agendaEndHour }}</div>
+              <div class="grey--text">Start hour: {{ agenda.startHour }}</div>
+              <div class="grey--text">End hour: {{ agenda.endHour }}</div>
               <div class="grey--text">Agenda: {{ agenda.agendaId }}</div>
             </v-card-text>
             <v-card-actions>

@@ -45,8 +45,11 @@ export default {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getScheduledList"]),
+    ...mapGetters(["getPpdAppointmentsList", "getScheduledList"]),
     postponed() {
+      return this.getPpdAppointmentsList;
+    },
+    scheduled() {
       return this.getScheduledList;
     },
     dialog: {
@@ -63,7 +66,7 @@ export default {
     ...mapActions(["addPpdAppointment"]),
     postponeAppointment() {
       this.addPpdAppointment({
-        code: this.code,
+        code: this._selfGenerateCode(),
         name: this.name,
         description: this.description
       });
@@ -72,7 +75,7 @@ export default {
     },
     getName() {
       if (this.code !== "") {
-        const appointment = this.postponed.find(
+        const appointment = this.scheduled.find(
           sched => sched.code === this.code
         );
         if (appointment !== undefined) {
@@ -82,13 +85,18 @@ export default {
     },
     _setCode(code) {
       this.code = code;
-      const appointment = this.postponed.find(
+      const appointment = this.scheduled.find(
         sched => sched.code === this.code
       );
       if (appointment !== undefined) {
         this.name = appointment.name;
         this.description = appointment.description;
       }
+    },
+    _selfGenerateCode() {
+      const { code } = this.postponed[Object.keys(this.postponed).length - 1];
+      const newNumber = parseInt(code.split("-")[1]) + 1;
+      return "schedPostponed-" + newNumber;
     }
   }
 };

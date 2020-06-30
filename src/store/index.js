@@ -40,7 +40,7 @@ const state = {
       date: "2020-06-24",
       startHour: "10:00",
       endHour: "11:00",
-      agendaId: "ANG-001",
+      agendaId: "ANG-1",
       participants: [
         {
           participantId: "PART-2",
@@ -56,7 +56,7 @@ const state = {
       date: "2020-06-24",
       startHour: "12:00",
       endHour: "15:00",
-      agendaId: "ANG-001",
+      agendaId: "ANG-1",
       participants: [
         {
           participantId: "PART-2",
@@ -82,23 +82,23 @@ const state = {
       date: "2020-06-24",
       startHour: "14:00",
       endHour: "15:00",
-      agendaId: "AGN-1",
+      agendaId: "ANG-1",
       participants: []
     }
   ],
   postponedAppointments: [
     {
-      code: "sched-4",
+      code: "schedPostponed-1",
       name: "Dentist",
       description: "I need to go to the dentist"
     },
     {
-      code: "sched-5",
+      code: "schedPostponed-2",
       name: "Doctor",
       description: "I need to go to the doctor"
     },
     {
-      code: "sched-6",
+      code: "schedPostponed-3",
       name: "University",
       description: "I need to go to my university"
     }

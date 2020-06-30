@@ -52,7 +52,7 @@
                 <v-select
                   :items="agendas"
                   label="Select an Agenda"
-                  v-model="agendaId"
+                  v-model="agendaName"
                 ></v-select>
               </v-col>
             </v-row>
@@ -86,20 +86,30 @@ export default {
       date: "",
       startHour: "",
       endHour: "",
-      agendaId: "1",
+      agendaName: "",
       participants: [],
       agendaStartHour: "11:00",
-      agendaEndHour: "17:00",
-      agendas: ["ANG-001", "ANG-002", "ANG-003"]
+      agendaEndHour: "17:00"
     };
   },
   props: {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getPpdAppointmentsList"]),
+    ...mapGetters(["getPpdAppointmentsList", "getScheduledList", "getAgendas"]),
     postponed() {
       return this.getPpdAppointmentsList;
+    },
+    scheduled() {
+      return this.getScheduledList;
+    },
+    agendas() {
+      const agendasArray = [];
+
+      for (let i = 0; i < this.getAgendas.length; i++) {
+        agendasArray.push(this.getAgendas[i].name);
+      }
+      return agendasArray;
     },
     dialog: {
       get() {
@@ -117,13 +127,15 @@ export default {
       if (this._validateData()) {
         if (this._validateHoursRange()) {
           this.addSchedule({
-            code: this.code,
+            code: this._selfGenerateCode(),
             name: this.name,
             description: this.description,
             date: this.date,
             startHour: this.startHour,
             endHour: this.endHour,
-            agendaId: this.agendaId
+            agendaId: this.getAgendas.find(agn => agn.name === this.agendaName)
+              .agendaId,
+            participants: []
           });
           this.deletePpdAppointment(this.code);
           this.dialog = false;
@@ -148,10 +160,16 @@ export default {
         this.date != "" &&
         this.startHour != "" &&
         this.endHour != "" &&
-        this.agendaId != ""
+        this.agendaName != ""
       );
     },
     _validateHoursRange() {
+      this.agendaStartHour = this.getAgendas.find(
+        agn => agn.name === this.agendaName
+      ).startHour;
+      this.agendaEndHour = this.getAgendas.find(
+        agn => agn.name === this.agendaName
+      ).endHour;
       const startAgenda = parseInt(this.agendaStartHour.split(":")[0]);
       const endAgenda = parseInt(this.agendaEndHour.split(":")[0]);
       const startAppointment = parseInt(this.startHour.split(":")[0]);
@@ -172,6 +190,11 @@ export default {
         this.name = appointment.name;
         this.description = appointment.description;
       }
+    },
+    _selfGenerateCode() {
+      const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
+      const newNumber = parseInt(code.split("-")[1]) + 1;
+      return "sched-" + newNumber;
     }
   }
 };
