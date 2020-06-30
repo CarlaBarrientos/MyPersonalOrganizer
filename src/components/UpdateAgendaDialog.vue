@@ -53,17 +53,18 @@ export default {
       description: "",
       startHour: "",
       endHour: "",
-      agendaId: ""
+      agendaId: "",
+      appointments: []
     };
   },
   props: {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getAgendaList"]),
+    ...mapGetters(["getAgendas"]),
     ...mapGetters(["getScheduledList"]),
     agendas() {
-      return this.getAgendaList;
+      return this.getAgendas;
     },
     scheduled() {
       return this.getScheduledList;
@@ -86,9 +87,10 @@ export default {
             this.modifyAgenda({
               name: this.name,
               description: this.description,
-              agendaStartHour: this.startHour,
-              agendaEndHour: this.endHour,
-              agendaId: this.agendaId
+              startHour: this.startHour,
+              endHour: this.endHour,
+              agendaId: this.agendaId,
+              appointments: this.appointments
             });
             this.dialog = false;
             this.name = "";
@@ -126,8 +128,9 @@ export default {
       if (agenda !== undefined) {
         this.name = agenda.name;
         this.description = agenda.description;
-        this.startHour = agenda.agendaStartHour;
-        this.endHour = agenda.agendaEndHour;
+        this.startHour = agenda.startHour;
+        this.endHour = agenda.endHour;
+        this.appointments = agenda.appointments;
       }
     },
     getName() {

@@ -41,10 +41,10 @@ export default {
     value: Boolean
   },
   computed: {
-    ...mapGetters(["getAgendaList"]),
+    ...mapGetters(["getAgendas"]),
     ...mapGetters(["getScheduledList"]),
     agendas() {
-      return this.getAgendaList;
+      return this.getAgendas;
     },
     scheduled() {
       return this.getScheduledList;
@@ -77,8 +77,8 @@ export default {
       if (agenda !== undefined) {
         this.name = agenda.name;
         this.description = agenda.description;
-        this.startHour = agenda.agendaStartHour;
-        this.endHour = agenda.agendaEndHour;
+        this.startHour = agenda.startHour;
+        this.endHour = agenda.endHour;
       }
     },
     getName() {

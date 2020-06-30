@@ -63,7 +63,7 @@
                 )"
                 :key="participant.participantId"
               >
-                <v-chip small outlined color="black" text-color="black">
+                <v-chip small outlined color="grey" text-color="grey">
                   {{ participant.name }}
                 </v-chip>
                 <v-btn
