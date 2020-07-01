@@ -274,20 +274,38 @@ export default {
               new Date(this.begindate),
               new Date(this.enddate)
             );
-            this.dates.forEach(function(date) {
-              if (self.day === date.slice(-2)) {
-                self.addSchedule({
-                  code: self._selfGenerateCodeSchedule(),
-                  name: self.name,
-                  description: self.description,
-                  date: date,
-                  startHour: self.startHour,
-                  endHour: self.endHour,
-                  agendaId: self.agendaId,
-                  participants: []
-                });
-              }
-            });
+            if (this.day.length === 1) this.day = "0" + this.day;
+            if (this.day === "31") {
+              this.dates.forEach(function(date) {
+                if (self._lastDay(date)) {
+                  self.addSchedule({
+                    code: self._selfGenerateCodeSchedule(),
+                    name: self.name,
+                    description: self.description,
+                    date: date,
+                    startHour: self.startHour,
+                    endHour: self.endHour,
+                    agendaId: self.agendaId,
+                    participants: []
+                  });
+                }
+              });
+            } else {
+              this.dates.forEach(function(date) {
+                if (self.day === date.split("-")[2]) {
+                  self.addSchedule({
+                    code: self._selfGenerateCodeSchedule(),
+                    name: self.name,
+                    description: self.description,
+                    date: date,
+                    startHour: self.startHour,
+                    endHour: self.endHour,
+                    agendaId: self.agendaId,
+                    participants: []
+                  });
+                }
+              });
+            }
           }
           this.dialog = false;
           this.name = "";
@@ -410,6 +428,17 @@ export default {
           parseInt(code.split("-")[1]) + 1 + "-" + this.code.split("-")[1];
         return "sched-" + newNumber;
       }
+    },
+    _lastDay(date) {
+      let last = function(y, m) {
+        return new Date(y, m + 1, 0).getDate();
+      };
+      if (
+        date.split("-")[2] ==
+        last(date.split("-")[0], parseInt(date.split("-")[1]) - 1)
+      )
+        return true;
+      else return false;
     }
   }
 };
