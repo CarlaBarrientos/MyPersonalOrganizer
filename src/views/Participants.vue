@@ -4,6 +4,7 @@
       <H1>Participants List</H1>
       <v-flex md3 class="pl-0 pt-0">
         <v-btn
+          id="btn-add-participant"
           long
           class="text-capitalize"
           color="green"
@@ -32,7 +33,7 @@
           </v-flex>
           <v-flex xs2 sm2>
             <div class="caption.grey--text">Name</div>
-            <div>{{ participant.name }}</div>
+            <div id="participant-name">{{ participant.name }}</div>
           </v-flex>
           <v-flex xs2 sm2>
             <div class="caption.grey--text">Contact Number</div>
@@ -55,6 +56,7 @@
           <v-flex xs1 md1>
             <div>
               <v-btn
+                :class="`participant ${participant.name}`"
                 icon
                 color="red"
                 @click.stop="

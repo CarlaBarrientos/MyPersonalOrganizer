@@ -13,6 +13,7 @@
             >Cancel</v-btn
           >
           <v-btn
+            id="btn-delete-participant"
             color="blue darken-1"
             text
             @click="removeParticipant(participantId)"
