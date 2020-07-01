@@ -10,6 +10,7 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
+                  id="participant-name"
                   v-model="name"
                   prepend-icon="mdi-account"
                   label="Name"
@@ -17,6 +18,7 @@
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                  id="participant-contactNumber"
                   v-model="contactNumber"
                   prepend-icon="mdi-cellphone"
                   label="Contact Number"
@@ -30,7 +32,11 @@
           <v-btn color="blue darken-1" text @click.stop="dialog = false"
             >Cancel</v-btn
           >
-          <v-btn color="blue darken-1" text @click="createNewParticipant()"
+          <v-btn
+            id="btn-save-participant"
+            color="blue darken-1"
+            text
+            @click="createNewParticipant()"
             >Save</v-btn
           >
         </v-card-actions>
