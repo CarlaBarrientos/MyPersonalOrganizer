@@ -6,7 +6,6 @@
           <span class="headline"
             >Are you sure you want to delete {{ getName() }} Agenda?</span
           >
-          >
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

@@ -123,10 +123,11 @@ export default {
   methods: {
     ...mapActions(["addSchedule"]),
     ...mapActions(["deletePpdAppointment"]),
+    ...mapActions(["addAppointmentToAgenda"]),
     addNewSchedule() {
       if (this._validateData()) {
         if (this._validateHoursRange()) {
-          this.addSchedule({
+          const newAppointment = {
             code: this._selfGenerateCode(),
             name: this.name,
             description: this.description,
@@ -136,8 +137,10 @@ export default {
             agendaId: this.getAgendas.find(agn => agn.name === this.agendaName)
               .agendaId,
             participants: []
-          });
+          };
           this.deletePpdAppointment(this.code);
+          this.addSchedule(newAppointment);
+          this.addAppointmentToAgenda(newAppointment);
           this.dialog = false;
           this.name = "";
           this.description = "";

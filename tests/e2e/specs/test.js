@@ -13,9 +13,9 @@ module.exports = {
       .pause(2000)
       .click("#btn-add-agenda")
       .pause(2000)
-      .setValue("input[id=agenda-name]", "Alejandro Gueno")
+      .setValue("input[id=agenda-name]", "Work")
       .pause(1000)
-      .setValue("input[id=agenda-desc]", "Un poco rata")
+      .setValue("input[id=agenda-desc]", "Working agenda")
       .pause(1000)
       .setValue("input[id=agenda-start-hour]", "12:00")
       .pause(1000)
@@ -23,7 +23,7 @@ module.exports = {
       .pause(1000)
       .click("#save-agenda")
       .pause(1000)
-      .assert.containsText(".subheading", "Alejandro Gueno")
+      .assert.containsText(".subheading", "Work")
       .end();
   }
 };
