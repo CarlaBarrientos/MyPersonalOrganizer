@@ -170,8 +170,8 @@
       </v-layout>
     </v-container>
     <CreateRecursiveDialog v-model="showCreateDialog" />
-    <DeleteScheduleDialog
-      ref="DeleteScheduleDialog"
+    <DeleteRecursiveDialog
+      ref="DeleteRecursiveDialog"
       v-model="showDeleteDialog"
     />
     <UpdateScheduleDialog
@@ -192,7 +192,7 @@
 
 <script>
 import CreateRecursiveDialog from "../components/CreateRecursiveDialog.vue";
-import DeleteScheduleDialog from "../components/DeleteScheduleDialog.vue";
+import DeleteRecursiveDialog from "../components/DeleteRecursiveDialog.vue";
 import UpdateScheduleDialog from "../components/UpdateScheduleDialog.vue";
 import PostponeDialog from "../components/PostponeAppointmentDialog.vue";
 import AddParticipantDialog from "../components/AddParticipantDialog.vue";
@@ -216,7 +216,7 @@ export default {
 
   components: {
     CreateRecursiveDialog,
-    DeleteScheduleDialog,
+    DeleteRecursiveDialog,
     UpdateScheduleDialog,
     AddParticipantDialog,
     DeleteParticipantsFromAppointment,
@@ -256,7 +256,7 @@ export default {
       this.$refs.UpdateScheduleDialog._setCode(code);
     },
     deleteDialog(code) {
-      this.$refs.DeleteScheduleDialog._setCode(code);
+      this.$refs.DeleteRecursiveDialog._setCode(code);
     },
     deleteParticipantDialog(data) {
       this.$refs.DeleteParticipantsFromAppointment.setData(data);

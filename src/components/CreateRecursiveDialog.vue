@@ -56,7 +56,7 @@
                 <v-select
                   :items="agendas"
                   label="Select an Agenda"
-                  v-model="agendaId"
+                  v-model="agendaName"
                 ></v-select>
               </v-col>
               <v-col cols="12">
@@ -105,17 +105,18 @@ export default {
   data() {
     return {
       name: "",
+      code: "",
       description: "",
       begindate: "",
       enddate: "",
       startHour: "",
       endHour: "",
-      agendaId: "1",
+      agendaId: "",
       repeatId: "Daily",
       participants: [],
-      agendaStartHour: "11:00",
-      agendaEndHour: "17:00",
-      agendas: ["ANG-001", "ANG-002", "ANG-003"],
+      agendaStartHour: "",
+      agendaEndHour: "",
+      agendaName: "",
       repeat: ["Daily", "Weekly", "Monthly"],
       day: "",
       days: [
@@ -136,11 +137,20 @@ export default {
   computed: {
     ...mapGetters(["getRecursiveList"]),
     ...mapGetters(["getScheduledList"]),
+    ...mapGetters(["getAgendas"]),
     scheduled() {
       return this.getScheduledList;
     },
     recursive() {
       return this.getRecursiveList;
+    },
+    agendas() {
+      const agendasArray = [];
+
+      for (let i = 0; i < this.getAgendas.length; i++) {
+        agendasArray.push(this.getAgendas[i].name);
+      }
+      return agendasArray;
     },
     dialog: {
       get() {
@@ -168,7 +178,10 @@ export default {
       };
       if (this._validateData()) {
         if (this._validateHoursRange()) {
-          this.addRecursive({
+          this.agendaId = this.getAgendas.find(
+            agenda => agenda.name === this.agendaName
+          ).agendaId;
+          let appointment = {
             code: this._selfGenerateCode(),
             name: this.name,
             description: this.description,
@@ -176,11 +189,14 @@ export default {
             enddate: this.enddate,
             startHour: this.startHour,
             endHour: this.endHour,
-            agendaId: this.agendaId,
+            agendaId: this.getAgendas.find(
+              agenda => agenda.name === this.agendaName
+            ).agendaId,
             time: this.repeatId,
             each: this.day,
             participants: []
-          });
+          };
+          this.addRecursive(appointment);
           if (this.repeatId === "Daily") {
             this.dates = this.obtainDates(
               new Date(this.begindate),
@@ -319,10 +335,16 @@ export default {
         this.enddate != "" &&
         this.startHour != "" &&
         this.endHour != "" &&
-        this.agendaId != ""
+        this.agendaName != ""
       );
     },
     _validateHoursRange() {
+      this.agendaStartHour = this.getAgendas.find(
+        agenda => agenda.name === this.agendaName
+      ).startHour;
+      this.agendaEndHour = this.getAgendas.find(
+        agenda => agenda.name === this.agendaName
+      ).endHour;
       const startAgenda = parseInt(this.agendaStartHour.split(":")[0]);
       const endAgenda = parseInt(this.agendaEndHour.split(":")[0]);
       const startAppointment = parseInt(this.startHour.split(":")[0]);
@@ -336,19 +358,22 @@ export default {
     },
     _selfGenerateCode() {
       if (this.recursive.length === 0) {
+        this.code = "recursive-" + 1;
         return "recursive-" + 1;
       } else {
         const { code } = this.recursive[Object.keys(this.recursive).length - 1];
         const newNumber = parseInt(code.split("-")[1]) + 1;
+        this.code = "recursive-" + newNumber;
         return "recursive-" + newNumber;
       }
     },
     _selfGenerateCodeSchedule() {
       if (this.scheduled.length === 0) {
-        return "sched-" + 1;
+        return "sched-" + 1 + "-" + this.code.split("-")[1];
       } else {
         const { code } = this.scheduled[Object.keys(this.scheduled).length - 1];
-        const newNumber = parseInt(code.split("-")[1]) + 1;
+        const newNumber =
+          parseInt(code.split("-")[1]) + 1 + "-" + this.code.split("-")[1];
         return "sched-" + newNumber;
       }
     }

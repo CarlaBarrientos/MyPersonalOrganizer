@@ -35,7 +35,9 @@
               <div class="grey--text">End hour: {{ agenda.endHour }}</div>
               <div class="grey--text">Appointments:</div>
               <div
-                v-for="appointment in agenda.appointments"
+                v-for="appointment in scheduled.filter(
+                  sched => sched.agendaId === agenda.agendaId
+                )"
                 :key="appointment.code"
               >
                 <v-chip small outlined color="grey" text-color="grey">
@@ -118,8 +120,12 @@ export default {
 
   computed: {
     ...mapGetters(["getAgendas"]),
+    ...mapGetters(["getScheduledList"]),
     agendas() {
       return this.getAgendas;
+    },
+    scheduled() {
+      return this.getScheduledList;
     }
   },
 
@@ -132,6 +138,9 @@ export default {
     },
     deleteDialog(code) {
       this.$refs.DeleteAgendaDialog._setCode(code);
+    },
+    onlyUnique(value, index, self) {
+      return self.indexOf(value) === index;
     }
   }
 };
