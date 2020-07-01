@@ -35,11 +35,7 @@ export default {
     return {
       code: "",
       name: "",
-      description: "",
-      date: "",
-      startHour: "",
-      endHour: "",
-      agendaId: ""
+      description: ""
     };
   },
   props: {
@@ -99,10 +95,6 @@ export default {
       if (appointment !== undefined) {
         this.name = appointment.name;
         this.description = appointment.description;
-        this.date = appointment.date;
-        this.startHour = appointment.startHour;
-        this.endHour = appointment.endHour;
-        this.agendaId = appointment.agendaId;
       }
     },
     getName() {
