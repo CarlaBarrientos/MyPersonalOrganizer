@@ -23,18 +23,46 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="3">
-                <v-text-field
-                  id="agenda-start-hour"
-                  v-model="startHour"
-                  label="Start Hour"
-                ></v-text-field>
+                <v-menu :close-on-content-click="false" width="30">
+                  <template v-slot:activator="{ on }">
+                    <v-row justify="center">
+                      <v-col>
+                        <v-text-field
+                          id="agenda-start-hour"
+                          v-model="startHour"
+                          label="Start Hour"
+                          v-on="on"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <v-time-picker
+                    format="24hr"
+                    v-model="startHour"
+                    v-on="on"
+                  ></v-time-picker>
+                </v-menu>
               </v-col>
               <v-col cols="3">
-                <v-text-field
-                  id="agenda-end-hour"
-                  v-model="endHour"
-                  label="End Hour"
-                ></v-text-field>
+                <v-menu :close-on-content-click="false" width="30">
+                  <template v-slot:activator="{ on }">
+                    <v-row justify="center">
+                      <v-col>
+                        <v-text-field
+                          id="agenda-end-hour"
+                          v-model="endHour"
+                          label="End Hour"
+                          v-on="on"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <v-time-picker
+                    format="24hr"
+                    v-model="endHour"
+                    v-on="on"
+                  ></v-time-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </v-container>
@@ -65,6 +93,7 @@ export default {
   name: "CreateAgendaDialog",
   data() {
     return {
+      on: "",
       name: "",
       description: "",
       startHour: "",

@@ -108,10 +108,6 @@ describe("Postponing appointmets module", () => {
     assert.isUndefined(appointmentToFound);
   });
 
-  it("When enabling an appointment throw warning msg if the requiered fields are empty.", () => {
-    //
-  });
-
   it("Validate data when all fields are filled correctly.", () => {
     const wrapper = mount(EnablePpdAppointmentDialog, {
       store,

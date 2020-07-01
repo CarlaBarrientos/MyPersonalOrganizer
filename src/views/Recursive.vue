@@ -127,42 +127,6 @@
                   </template>
                   <span>Update</span>
                 </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      fab
-                      depressed
-                      dark
-                      color="blue-grey"
-                      @click.stop="
-                        postponeAppointmentDialog(appointment.code);
-                        showPostponeDialog = true;
-                      "
-                      v-on="on"
-                    >
-                      <v-icon>mdi-calendar-remove-outline</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Postpone</span>
-                </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      fab
-                      depressed
-                      dark
-                      color="deep-purple"
-                      @click.stop="
-                        addDialog(appointment.code);
-                        showAddParticipantDialog = true;
-                      "
-                      v-on="on"
-                    >
-                      <v-icon>mdi-account-multiple-plus-outline</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Add participant</span>
-                </v-tooltip>
               </v-layout>
             </v-card-actions>
           </v-card>
@@ -178,15 +142,6 @@
       ref="UpdateScheduleDialog"
       v-model="showUpdateDialog"
     />
-    <PostponeDialog ref="PostponeDialog" v-model="showPostponeDialog" />
-    <AddParticipantDialog
-      ref="AddParticipantDialog"
-      v-model="showAddParticipantDialog"
-    />
-    <DeleteParticipantsFromAppointment
-      ref="DeleteParticipantsFromAppointment"
-      v-model="showDeleteParticipantDialog"
-    />
   </div>
 </template>
 
@@ -194,9 +149,6 @@
 import CreateRecursiveDialog from "../components/CreateRecursiveDialog.vue";
 import DeleteRecursiveDialog from "../components/DeleteRecursiveDialog.vue";
 import UpdateScheduleDialog from "../components/UpdateScheduleDialog.vue";
-import PostponeDialog from "../components/PostponeAppointmentDialog.vue";
-import AddParticipantDialog from "../components/AddParticipantDialog.vue";
-import DeleteParticipantsFromAppointment from "../components/DeleteParticipantsFromAppointment.vue";
 
 import { mapGetters } from "vuex";
 
@@ -217,10 +169,7 @@ export default {
   components: {
     CreateRecursiveDialog,
     DeleteRecursiveDialog,
-    UpdateScheduleDialog,
-    AddParticipantDialog,
-    DeleteParticipantsFromAppointment,
-    PostponeDialog
+    UpdateScheduleDialog
   },
 
   computed: {
@@ -257,12 +206,6 @@ export default {
     },
     deleteDialog(code) {
       this.$refs.DeleteRecursiveDialog._setCode(code);
-    },
-    deleteParticipantDialog(data) {
-      this.$refs.DeleteParticipantsFromAppointment.setData(data);
-    },
-    postponeAppointmentDialog(code) {
-      this.$refs.PostponeDialog._setCode(code);
     },
     currentDate() {
       let today = new Date();

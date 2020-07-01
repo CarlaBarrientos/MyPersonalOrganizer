@@ -136,9 +136,7 @@ export default {
           this.agendaEndHour = "";
           this.agendaStartHour = "";
         } else {
-          alert(
-            "The start/end hour should be between the hours range of the Agenda."
-          );
+          alert("The End Hour should be greater than Start Hour.");
         }
       } else {
         alert("All fields must be filled!");
@@ -163,24 +161,14 @@ export default {
       ).endHour;
       const startAgenda = parseInt(this.agendaStartHour.split(":")[0]);
       const endAgenda = parseInt(this.agendaEndHour.split(":")[0]);
-      if (
-        (this.startHour.length === 4 || this.startHour.length === 5) &&
-        (this.startHour.indexOf(":") === 1 ||
-          this.startHour.indexOf(":") === 2) &&
-        (this.endHour.length === 4 || this.endHour.length === 5) &&
-        (this.endHour.indexOf(":") === 1 || this.endHour.indexOf(":") === 2)
-      ) {
-        const startAppointment = parseInt(this.startHour.split(":")[0]);
-        const endAppointment = parseInt(this.endHour.split(":")[0]);
-        return (
-          startAppointment >= startAgenda &&
-          startAppointment < endAgenda &&
-          endAppointment > startAgenda &&
-          endAppointment <= endAgenda
-        );
-      } else {
-        alert("The hour format is not valid!");
-      }
+      const startAppointment = parseInt(this.startHour.split(":")[0]);
+      const endAppointment = parseInt(this.endHour.split(":")[0]);
+      return (
+        startAppointment >= startAgenda &&
+        startAppointment < endAgenda &&
+        endAppointment > startAgenda &&
+        endAppointment <= endAgenda
+      );
     },
     _selfGenerateCode() {
       if (this.scheduled.length === 0) {
