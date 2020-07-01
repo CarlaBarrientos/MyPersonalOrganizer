@@ -53,7 +53,6 @@ describe("Postponing appointmets module", () => {
     ] = wrapper.vm.$store.state.postponedAppointments.filter(
       app => app.code === expectedPpdCode
     );
-    //console.log("Probando 1: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
 
     assert.equal(expectedPpdCode, appointmentToFound.code);
     assert.equal(ppdAppointment.name, appointmentToFound.name);
@@ -82,7 +81,6 @@ describe("Postponing appointmets module", () => {
     ] = wrapper.vm.$store.state.postponedAppointments.filter(
       app => app.code === ppdAppointment.code
     );
-    //console.log("Probando 2: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
 
     assert.equal(ppdAppointment.code, appointmentToFound.code);
     assert.equal(ppdAppointment.name, appointmentToFound.name);
@@ -104,7 +102,6 @@ describe("Postponing appointmets module", () => {
       app => app.code === codeToDelete
     );
 
-    //console.log("Probando 3: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
     assert.isUndefined(appointmentToFound);
   });
 
@@ -132,7 +129,6 @@ describe("Postponing appointmets module", () => {
     wrapper.vm.$data.agendaName = appointmentToEnable.agendaName;
     const boolExpected = wrapper.vm._validateData();
 
-    //console.log("Probando 4: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
     assert.isTrue(boolExpected);
   });
 
@@ -169,9 +165,6 @@ describe("Postponing appointmets module", () => {
     ] = wrapper.vm.$store.state.scheduledAppointments.filter(
       app => app.code === expectedCode
     );
-    //console.log("Probando 5: " + JSON.stringify(wrapper.vm.$store.state.postponedAppointments));
-    //console.log("Probando 5.1: " + JSON.stringify(wrapper.vm.$store.state.scheduledAppointments));
-
     assert.equal(expectedschedId, appointmentToFound.code);
     assert.equal(appointmentToEnable.name, appointmentToFound.name);
     assert.equal(

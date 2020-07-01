@@ -28,7 +28,9 @@
             :to="link.route"
             :class="`pa-3 link ${link.text}`"
           >
-            <v-list-item-title>{{ link.text }}</v-list-item-title>
+            <v-list-item-title color="white ">{{
+              link.text
+            }}</v-list-item-title>
             <v-icon color="white">{{ link.icon }}</v-icon>
           </v-list-item>
         </v-list-item-group>

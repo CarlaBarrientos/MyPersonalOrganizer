@@ -131,8 +131,6 @@ describe("Scheduling appointmets/meetings module", () => {
       store,
       localVue
     });
-    //const invalidDate = wrapper.vm._validateDate("2020-06-24");
-    //assert.isFalse(invalidDate);
     const validDate = wrapper.vm._validateDate("2020-06-22");
     assert.isTrue(validDate);
   });

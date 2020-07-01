@@ -109,24 +109,6 @@
                   </template>
                   <span>Delete</span>
                 </v-tooltip>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      fab
-                      depressed
-                      dark
-                      color="indigo"
-                      @click.stop="
-                        updateDialog(appointment.code);
-                        showUpdateDialog = true;
-                      "
-                      v-on="on"
-                    >
-                      <v-icon>mdi-pencil-outline</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>Update</span>
-                </v-tooltip>
               </v-layout>
             </v-card-actions>
           </v-card>
