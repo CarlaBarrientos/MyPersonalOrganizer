@@ -104,6 +104,7 @@ export default {
   name: "CreateScheduleDialog",
   data() {
     return {
+      on: "",
       name: "",
       description: "",
       date: "",
