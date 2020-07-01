@@ -116,9 +116,19 @@ export default {
       );
     },
     _validateHoursRange() {
-      const startAgenda = parseInt(this.startHour.split(":")[0]);
-      const endAgenda = parseInt(this.endHour.split(":")[0]);
-      return startAgenda < endAgenda;
+      if (
+        (this.startHour.length === 4 || this.startHour.length === 5) &&
+        (this.startHour.indexOf(":") === 1 ||
+          this.startHour.indexOf(":") === 2) &&
+        (this.endHour.length === 4 || this.endHour.length === 5) &&
+        (this.endHour.indexOf(":") === 1 || this.endHour.indexOf(":") === 2)
+      ) {
+        const startAgenda = parseInt(this.startHour.split(":")[0]);
+        const endAgenda = parseInt(this.endHour.split(":")[0]);
+        return startAgenda < endAgenda;
+      } else {
+        alert("The hour format is not valid!");
+      }
     },
     _setCode(agendaId) {
       this.agendaId = agendaId;
