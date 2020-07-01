@@ -35,13 +35,16 @@
               <div class="grey--text">End hour: {{ agenda.endHour }}</div>
               <div class="grey--text">Appointments:</div>
               <div
-                v-for="appointment in scheduled.filter(
-                  sched => sched.agendaId === agenda.agendaId
-                )"
+                v-for="appointment in (filter = scheduled
+                  .filter(sched => sched.agendaId === agenda.agendaId)
+                  .map(item => item.name)
+                  .filter(
+                    (value, index, self) => self.indexOf(value) === index
+                  ))"
                 :key="appointment.code"
               >
                 <v-chip small outlined color="grey" text-color="grey">
-                  {{ appointment.name }}
+                  {{ appointment }}
                 </v-chip>
               </div>
             </v-card-text>
